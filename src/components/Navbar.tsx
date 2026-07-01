@@ -30,12 +30,7 @@ export default function Navbar() {
       <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 68 }}>
         {/* Logo */}
         <a href="#" style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{
-            width: 34, height: 34, borderRadius: 8,
-            background: "linear-gradient(135deg, #22d3ee, #0ea5e9)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontWeight: 900, fontSize: 16, color: "#0a0e1a",
-          }}>A</div>
+          <img src="/favicon.svg" alt="Axion Group" style={{ width: 34, height: 34 }} />
           <span style={{ fontWeight: 800, fontSize: 17, letterSpacing: -0.3 }}>
             AXION <span style={{ color: "#22d3ee" }}>GROUP</span>
           </span>
