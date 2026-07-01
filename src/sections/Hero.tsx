@@ -24,7 +24,7 @@ export default function Hero() {
         <h1 className="fade-up-2" style={{ fontSize: "clamp(36px, 6vw, 72px)", fontWeight: 900, lineHeight: 1.1, letterSpacing: -2, marginBottom: 24 }}>
           A gestão que sua{" "}
           <span className="gradient-text">indústria</span>
-          <br />merecia.
+          <br />merece, pelo preço que ela pode pagar.
         </h1>
 
         <p className="fade-up-3" style={{ fontSize: "clamp(16px, 2vw, 20px)", color: "#94a3b8", maxWidth: 600, margin: "0 auto 40px", lineHeight: 1.7 }}>
