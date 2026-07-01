@@ -1,8 +1,11 @@
 import { ArrowRight, Play } from "lucide-react";
+import ParticleCanvas from "../components/ParticleCanvas";
 
 export default function Hero() {
   return (
     <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", overflow: "hidden" }}>
+      {/* Particle animation */}
+      <ParticleCanvas />
       {/* Background grid */}
       <div style={{
         position: "absolute", inset: 0,
@@ -16,7 +19,7 @@ export default function Hero() {
       <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: 700, height: 400, background: "radial-gradient(ellipse, rgba(14,165,233,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "10%", right: "10%", width: 400, height: 400, background: "radial-gradient(ellipse, rgba(129,140,248,0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-      <div className="container" style={{ position: "relative", paddingTop: 120, paddingBottom: 80, textAlign: "center" }}>
+      <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: 120, paddingBottom: 80, textAlign: "center" }}>
         <div className="badge fade-up" style={{ marginBottom: 24 }}>
           🚀 Gestão industrial do futuro
         </div>
