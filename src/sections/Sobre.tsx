@@ -12,7 +12,7 @@ export default function Sobre() {
               <span className="gradient-text">entende a indústria</span>
             </h2>
             <p style={{ color: "#64748b", fontSize: 15, lineHeight: 1.8, marginBottom: 16 }}>
-              A <strong style={{ color: "#0f172a" }}>AXION GROUP</strong> nasceu da necessidade real de indústrias de processo que não encontravam no mercado um sistema feito para a sua realidade — com fórmulas, lotes, rastreabilidade, fiscal complexo e múltiplos módulos integrados.
+              A <strong style={{ color: "#0f172a" }}>AXION GROUP</strong> nasceu da necessidade real de indústrias que não encontravam no mercado um sistema feito para a sua realidade — com fórmulas, lotes, rastreabilidade, fiscal complexo e múltiplos módulos integrados.
             </p>
             <p style={{ color: "#64748b", fontSize: 15, lineHeight: 1.8 }}>
               Desenvolvemos o <strong style={{ color: "#0284c7" }}>AXION ONE</strong> para ser o sistema que essas indústrias merecem: completo, moderno, 100% web e em constante evolução.
@@ -30,7 +30,7 @@ export default function Sobre() {
               {
                 icon: Eye,
                 title: "Visão",
-                text: "Ser o sistema de referência para indústrias de processo no Brasil até 2027.",
+                text: "Ser o sistema de referência para indústrias no Brasil até 2027.",
                 color: "#6366f1",
               },
               {

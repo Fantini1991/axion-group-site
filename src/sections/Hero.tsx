@@ -34,7 +34,7 @@ export default function Hero() {
         </h1>
 
         <p className="fade-up-3" style={{ fontSize: "clamp(16px, 2vw, 19px)", color: "rgba(255,255,255,0.55)", maxWidth: 600, margin: "0 auto 40px", lineHeight: 1.75 }}>
-          AXION ONE é o ERP completo para indústrias de processo — gestão de fórmulas, PCP, estoque, fiscal e muito mais. Tudo integrado, 100% web.
+          AXION ONE é o ERP completo para indústrias — gestão de fórmulas, PCP, estoque, fiscal e muito mais. Tudo integrado, 100% web.
         </p>
 
         <div className="fade-up-4" style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginBottom: 64 }}>
