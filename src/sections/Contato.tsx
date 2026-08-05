@@ -1,15 +1,33 @@
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
-import emailjs from "@emailjs/browser";
 
-// ─── EmailJS config ───────────────────────────────────────────────────────────
-// Crie sua conta em https://www.emailjs.com/ e substitua os valores abaixo
-const EMAILJS_SERVICE_ID  = "service_bw4gtiq";
-const EMAILJS_TEMPLATE_ID = "template_e5xn4uu";
-const EMAILJS_PUBLIC_KEY  = "6eN2bud-1a-YPtmbM";
-// ─────────────────────────────────────────────────────────────────────────────
+const RECAPTCHA_SITE_KEY = "6LdjNXctAAAAAKjd93fpawbFnVvV3DYRQNNsP95w";
 
 const segmentos = ["Tintas e Vernizes", "Revestimentos", "Químico", "Cosméticos", "Farmacêutico", "Alimentos", "Outro"];
+
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (cb: () => void) => void;
+      execute: (key: string, opts: { action: string }) => Promise<string>;
+    };
+  }
+}
+
+function loadRecaptcha(): Promise<void> {
+  return new Promise(resolve => {
+    if (window.grecaptcha) { resolve(); return; }
+    const script = document.createElement("script");
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+    script.onload = () => window.grecaptcha.ready(resolve);
+    document.head.appendChild(script);
+  });
+}
+
+async function getRecaptchaToken(): Promise<string> {
+  await loadRecaptcha();
+  return window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "contact" });
+}
 
 export default function Contato() {
   const [sent, setSent]       = useState(false);
@@ -24,22 +42,17 @@ export default function Contato() {
     setLoading(true);
     setError("");
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        {
-          from_name:  form.nome,
-          empresa:    form.empresa,
-          segmento:   form.segmento,
-          telefone:   form.telefone || "Não informado",
-          mensagem:   form.mensagem || "Sem mensagem adicional",
-          reply_to:   "",
-        },
-        EMAILJS_PUBLIC_KEY,
-      );
+      const recaptchaToken = await getRecaptchaToken();
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, recaptchaToken }),
+      });
+      const data = await res.json() as { ok?: boolean; error?: string };
+      if (!res.ok) throw new Error(data.error ?? "Erro desconhecido");
       setSent(true);
-    } catch {
-      setError("Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro ao enviar. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -65,7 +78,6 @@ export default function Contato() {
             <p style={{ color: "#94a3b8", fontSize: 15, lineHeight: 1.8, marginBottom: 40 }}>
               Agende uma demonstração gratuita e veja o AXION ONE funcionando com os dados da sua empresa. Sem compromisso, sem surpresas.
             </p>
-
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               {[
                 { label: "Demonstração gratuita", desc: "Mostramos o sistema rodando ao vivo, com foco no seu segmento." },
@@ -138,6 +150,10 @@ export default function Contato() {
                   style={{ justifyContent: "center", marginTop: 4, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
                   <Send size={16} /> {loading ? "Enviando..." : "Enviar mensagem"}
                 </button>
+
+                <p style={{ fontSize: 10, color: "#334155", textAlign: "center", margin: 0 }}>
+                  Protegido por reCAPTCHA — <a href="https://policies.google.com/privacy" target="_blank" style={{ color: "#475569" }}>Privacidade</a> · <a href="https://policies.google.com/terms" target="_blank" style={{ color: "#475569" }}>Termos</a>
+                </p>
               </form>
             )}
           </div>
@@ -148,9 +164,8 @@ export default function Contato() {
         @media (max-width: 768px) {
           #contato .container > div { grid-template-columns: 1fr !important; gap: 40px !important; }
         }
-        input:focus, select:focus, textarea:focus {
-          border-color: #22d3ee !important;
-        }
+        input:focus, select:focus, textarea:focus { border-color: #22d3ee !important; }
+        .grecaptcha-badge { visibility: hidden; }
       `}</style>
     </section>
   );
