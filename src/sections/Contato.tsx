@@ -1,18 +1,48 @@
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
+import emailjs from "@emailjs/browser";
+
+// ─── EmailJS config ───────────────────────────────────────────────────────────
+// Crie sua conta em https://www.emailjs.com/ e substitua os valores abaixo
+const EMAILJS_SERVICE_ID  = "service_bw4gtiq";
+const EMAILJS_TEMPLATE_ID = "template_e5xn4uu";
+const EMAILJS_PUBLIC_KEY  = "6eN2bud-1a-YPtmbM";
+// ─────────────────────────────────────────────────────────────────────────────
 
 const segmentos = ["Tintas e Vernizes", "Revestimentos", "Químico", "Cosméticos", "Farmacêutico", "Alimentos", "Outro"];
 
 export default function Contato() {
-  const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ nome: "", empresa: "", segmento: "", telefone: "", mensagem: "" });
+  const [sent, setSent]       = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState("");
+  const [form, setForm]       = useState({ nome: "", empresa: "", segmento: "", telefone: "", mensagem: "" });
 
   const set = (k: keyof typeof form, v: string) => setForm(f => ({ ...f, [k]: v }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui pode integrar com email/Supabase futuramente
-    setSent(true);
+    setLoading(true);
+    setError("");
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name:  form.nome,
+          empresa:    form.empresa,
+          segmento:   form.segmento,
+          telefone:   form.telefone || "Não informado",
+          mensagem:   form.mensagem || "Sem mensagem adicional",
+          reply_to:   "",
+        },
+        EMAILJS_PUBLIC_KEY,
+      );
+      setSent(true);
+    } catch {
+      setError("Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inp: React.CSSProperties = {
@@ -93,12 +123,20 @@ export default function Contato() {
 
                 <div>
                   <label style={{ display: "block", fontSize: 11, color: "#94a3b8", marginBottom: 5, fontWeight: 600 }}>MENSAGEM</label>
-                  <textarea value={form.mensagem} onChange={e => set("mensagem", e.target.value)} rows={3} placeholder="Conte brevemente sobre sua operação e o que mais precisa..."
+                  <textarea value={form.mensagem} onChange={e => set("mensagem", e.target.value)} rows={3}
+                    placeholder="Conte brevemente sobre sua operação e o que mais precisa..."
                     style={{ ...inp, height: "auto", resize: "vertical" }} />
                 </div>
 
-                <button type="submit" className="btn-primary" style={{ justifyContent: "center", marginTop: 4 }}>
-                  <Send size={16} /> Enviar mensagem
+                {error && (
+                  <div style={{ fontSize: 13, color: "#ef4444", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 8, padding: "10px 14px" }}>
+                    {error}
+                  </div>
+                )}
+
+                <button type="submit" className="btn-primary" disabled={loading}
+                  style={{ justifyContent: "center", marginTop: 4, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
+                  <Send size={16} /> {loading ? "Enviando..." : "Enviar mensagem"}
                 </button>
               </form>
             )}
