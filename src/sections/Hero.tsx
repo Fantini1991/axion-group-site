@@ -3,36 +3,38 @@ import ParticleCanvas from "../components/ParticleCanvas";
 
 export default function Hero() {
   return (
-    <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", overflow: "hidden" }}>
-      {/* Particle animation */}
+    <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", overflow: "hidden", background: "linear-gradient(160deg, #0c1b33 0%, #0f2952 55%, #0c1b33 100%)" }}>
       <ParticleCanvas />
-      {/* Background grid */}
+      {/* Subtle grid */}
       <div style={{
         position: "absolute", inset: 0,
         backgroundImage: `
-          linear-gradient(rgba(34,211,238,0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(34,211,238,0.03) 1px, transparent 1px)
+          linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px)
         `,
         backgroundSize: "60px 60px",
       }} />
-      {/* Glow blobs */}
-      <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: 700, height: 400, background: "radial-gradient(ellipse, rgba(14,165,233,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "10%", right: "10%", width: 400, height: 400, background: "radial-gradient(ellipse, rgba(129,140,248,0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
+      {/* Glow top center */}
+      <div style={{ position: "absolute", top: "5%", left: "50%", transform: "translateX(-50%)", width: 700, height: 400, background: "radial-gradient(ellipse, rgba(56,189,248,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
+      {/* Wave bottom transition to white */}
+      <div style={{ position: "absolute", bottom: -2, left: 0, right: 0, lineHeight: 0, zIndex: 2 }}>
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ width: "100%", height: 80, display: "block" }}>
+          <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="white" />
+        </svg>
+      </div>
 
-      <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: 120, paddingBottom: 80, textAlign: "center" }}>
-        <div className="badge fade-up" style={{ marginBottom: 24 }}>
-          🚀 Gestão industrial do futuro
+      <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: 120, paddingBottom: 120, textAlign: "center" }}>
+        <div className="badge-navy fade-up" style={{ marginBottom: 24 }}>
+          🏭 ERP Industrial · Químico · Tintas · Revestimentos
         </div>
 
-        <h1 className="fade-up-2" style={{ fontSize: "clamp(36px, 6vw, 72px)", fontWeight: 900, lineHeight: 1.1, letterSpacing: -2, marginBottom: 24 }}>
-          A gestão que sua{" "}
-          <span className="gradient-text">indústria</span>
-          <br />merece, pelo preço que ela pode pagar.
+        <h1 className="fade-up-2" style={{ fontSize: "clamp(36px, 6vw, 70px)", fontWeight: 900, lineHeight: 1.1, letterSpacing: -2, marginBottom: 24, color: "white" }}>
+          Do laboratório ao faturamento,<br />
+          em <span style={{ color: "#38bdf8" }}>uma só plataforma</span>
         </h1>
 
-        <p className="fade-up-3" style={{ fontSize: "clamp(16px, 2vw, 20px)", color: "#94a3b8", maxWidth: 600, margin: "0 auto 40px", lineHeight: 1.7 }}>
-          Do laboratório ao faturamento, em uma só plataforma.
-          AXION ONE é o ERP completo para indústrias de processo — químico, tintas, vernizes e revestimentos.
+        <p className="fade-up-3" style={{ fontSize: "clamp(16px, 2vw, 19px)", color: "rgba(255,255,255,0.55)", maxWidth: 600, margin: "0 auto 40px", lineHeight: 1.75 }}>
+          AXION ONE é o ERP completo para indústrias de processo — gestão de fórmulas, PCP, estoque, fiscal e muito mais. Tudo integrado, 100% web.
         </p>
 
         <div className="fade-up-4" style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginBottom: 64 }}>
@@ -45,7 +47,7 @@ export default function Hero() {
         </div>
 
         {/* Stats */}
-        <div className="fade-up-4" style={{ display: "flex", gap: 48, justifyContent: "center", flexWrap: "wrap" }}>
+        <div className="fade-up-4" style={{ display: "flex", gap: 48, justifyContent: "center", flexWrap: "wrap", marginBottom: 72 }}>
           {[
             { val: "13+", label: "Módulos integrados" },
             { val: "100%", label: "Web — acesso de qualquer lugar" },
@@ -53,68 +55,68 @@ export default function Hero() {
             { val: "Multi", label: "Empresa e multi-usuário" },
           ].map(s => (
             <div key={s.label} style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 28, fontWeight: 800, color: "#22d3ee", lineHeight: 1 }}>{s.val}</div>
-              <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>{s.label}</div>
+              <div style={{ fontSize: 28, fontWeight: 800, color: "#38bdf8", lineHeight: 1 }}>{s.val}</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", marginTop: 4 }}>{s.label}</div>
             </div>
           ))}
         </div>
 
         {/* Mock dashboard preview */}
         <div style={{
-          marginTop: 72, borderRadius: 20, overflow: "hidden",
-          border: "1px solid #1e2d42", background: "#0d1117",
-          boxShadow: "0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(34,211,238,0.05)",
-          maxWidth: 900, margin: "72px auto 0",
+          borderRadius: 20, overflow: "hidden",
+          border: "1px solid rgba(255,255,255,0.1)",
+          boxShadow: "0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(56,189,248,0.06)",
+          maxWidth: 900, margin: "0 auto",
         }}>
-          {/* Fake browser bar */}
-          <div style={{ background: "#111827", padding: "12px 16px", display: "flex", alignItems: "center", gap: 8, borderBottom: "1px solid #1e2d42" }}>
+          {/* Browser bar — navy */}
+          <div style={{ background: "#0c1b33", padding: "12px 16px", display: "flex", alignItems: "center", gap: 8, borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
             <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#ef4444" }} />
             <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#f59e0b" }} />
             <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#22c55e" }} />
-            <div style={{ flex: 1, background: "#1a2235", borderRadius: 6, height: 26, marginLeft: 8, display: "flex", alignItems: "center", paddingLeft: 12 }}>
-              <span style={{ fontSize: 11, color: "#475569" }}>erp.groupaxion.com.br</span>
+            <div style={{ flex: 1, background: "rgba(255,255,255,0.06)", borderRadius: 6, height: 26, marginLeft: 8, display: "flex", alignItems: "center", paddingLeft: 12 }}>
+              <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>erp.groupaxion.com.br</span>
             </div>
           </div>
-          {/* Fake dashboard */}
-          <div style={{ background: "#0a0e1a", padding: 24, display: "grid", gridTemplateColumns: "200px 1fr", gap: 16, minHeight: 340 }}>
-            {/* Sidebar */}
-            <div style={{ background: "#111827", borderRadius: 12, padding: 16 }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color: "#22d3ee", marginBottom: 16, letterSpacing: 1 }}>AXION ONE</div>
+          {/* Dashboard — light */}
+          <div style={{ background: "#f8fafc", display: "grid", gridTemplateColumns: "180px 1fr", minHeight: 320 }}>
+            {/* Sidebar navy */}
+            <div style={{ background: "#0c1b33", padding: 16 }}>
+              <div style={{ fontSize: 11, fontWeight: 900, color: "#38bdf8", marginBottom: 18, letterSpacing: 0.5 }}>AXION ONE</div>
               {["Laboratório / P&D", "Compras", "Estoque", "PCP", "Produção", "Vendas", "Fiscal"].map(m => (
-                <div key={m} style={{ padding: "6px 10px", borderRadius: 6, fontSize: 11, color: m === "Vendas" ? "#22d3ee" : "#64748b", background: m === "Vendas" ? "rgba(34,211,238,0.08)" : "transparent", marginBottom: 2 }}>
+                <div key={m} style={{ padding: "7px 10px", borderRadius: 7, fontSize: 11, color: m === "Vendas" ? "#38bdf8" : "rgba(255,255,255,0.3)", background: m === "Vendas" ? "rgba(56,189,248,0.1)" : "transparent", marginBottom: 2, fontWeight: m === "Vendas" ? 700 : 400 }}>
                   {m}
                 </div>
               ))}
             </div>
-            {/* Content */}
-            <div>
+            {/* Content — white */}
+            <div style={{ padding: 18 }}>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 16 }}>
                 {[
-                  { label: "Pedidos do mês", val: "R$ 284.500", color: "#22c55e" },
-                  { label: "Orçamentos abertos", val: "18", color: "#22d3ee" },
-                  { label: "Fórmulas ativas", val: "142", color: "#818cf8" },
+                  { label: "Pedidos do mês", val: "R$ 284.500", color: "#16a34a" },
+                  { label: "Orçamentos abertos", val: "18", color: "#0284c7" },
+                  { label: "Fórmulas ativas", val: "142", color: "#7c3aed" },
                 ].map(c => (
-                  <div key={c.label} style={{ background: "#111827", borderRadius: 10, padding: "14px 16px", border: "1px solid #1e2d42" }}>
-                    <div style={{ fontSize: 10, color: "#64748b", marginBottom: 4 }}>{c.label}</div>
+                  <div key={c.label} style={{ background: "white", borderRadius: 10, padding: "12px 14px", border: "1px solid #e2e8f0" }}>
+                    <div style={{ fontSize: 10, color: "#94a3b8", marginBottom: 4 }}>{c.label}</div>
                     <div style={{ fontSize: 20, fontWeight: 800, color: c.color }}>{c.val}</div>
                   </div>
                 ))}
               </div>
-              <div style={{ background: "#111827", borderRadius: 10, padding: 16, border: "1px solid #1e2d42" }}>
-                <div style={{ fontSize: 11, color: "#64748b", marginBottom: 12 }}>Pedidos recentes</div>
+              <div style={{ background: "white", borderRadius: 10, padding: "12px 14px", border: "1px solid #e2e8f0" }}>
+                <div style={{ fontSize: 11, color: "#94a3b8", marginBottom: 12, fontWeight: 600 }}>PEDIDOS RECENTES</div>
                 {[
-                  { cod: "PV-2024", cliente: "Indústria Alfa LTDA", val: "R$ 18.400", status: "Aprovado" },
-                  { cod: "PV-2023", cliente: "Colorfix Tintas", val: "R$ 9.250", status: "Em análise" },
-                  { cod: "PV-2022", cliente: "Revestech S.A.", val: "R$ 31.000", status: "Aprovado" },
+                  { cod: "PV-2024", cliente: "Indústria Alfa LTDA", val: "R$ 18.400", status: "Aprovado", ok: true },
+                  { cod: "PV-2023", cliente: "Colorfix Tintas", val: "R$ 9.250", status: "Em análise", ok: false },
+                  { cod: "PV-2022", cliente: "Revestech S.A.", val: "R$ 31.000", status: "Aprovado", ok: true },
                 ].map(r => (
-                  <div key={r.cod} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #1a2235" }}>
+                  <div key={r.cod} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #f1f5f9" }}>
                     <div>
-                      <span style={{ fontSize: 11, color: "#22d3ee", fontFamily: "monospace" }}>{r.cod}</span>
-                      <span style={{ fontSize: 11, color: "#94a3b8", marginLeft: 10 }}>{r.cliente}</span>
+                      <span style={{ fontSize: 11, color: "#0284c7", fontFamily: "monospace", fontWeight: 700 }}>{r.cod}</span>
+                      <span style={{ fontSize: 11, color: "#64748b", marginLeft: 10 }}>{r.cliente}</span>
                     </div>
-                    <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                      <span style={{ fontSize: 11, color: "#f1f5f9", fontWeight: 600 }}>{r.val}</span>
-                      <span style={{ fontSize: 10, padding: "2px 8px", borderRadius: 99, background: r.status === "Aprovado" ? "rgba(34,197,94,0.15)" : "rgba(250,204,21,0.15)", color: r.status === "Aprovado" ? "#22c55e" : "#facc15" }}>{r.status}</span>
+                    <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                      <span style={{ fontSize: 11, color: "#0f172a", fontWeight: 600 }}>{r.val}</span>
+                      <span style={{ fontSize: 10, padding: "2px 8px", borderRadius: 99, background: r.ok ? "rgba(22,163,74,0.1)" : "rgba(202,138,4,0.1)", color: r.ok ? "#16a34a" : "#b45309", fontWeight: 700 }}>{r.status}</span>
                     </div>
                   </div>
                 ))}

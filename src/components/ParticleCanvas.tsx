@@ -42,7 +42,7 @@ export default function ParticleCanvas() {
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 140) {
-            ctx.strokeStyle = `rgba(34,211,238,${(1 - dist / 140) * 0.2})`;
+            ctx.strokeStyle = `rgba(56,189,248,${(1 - dist / 140) * 0.18})`;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -63,7 +63,7 @@ export default function ParticleCanvas() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(34,211,238,${p.alpha})`;
+        ctx.fillStyle = `rgba(56,189,248,${p.alpha})`;
         ctx.fill();
       }
 

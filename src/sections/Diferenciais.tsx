@@ -17,13 +17,13 @@ const items = [
     icon: RefreshCw,
     title: "Rastreabilidade completa",
     desc: "Cada lote tem origem rastreável: da fórmula ao pedido de venda, passando por compras, estoque, produção e CQ. Conformidade total com auditorias e clientes exigentes.",
-    color: "#22d3ee",
+    color: "#38bdf8",
   },
   {
     icon: Globe,
     title: "100% web e multi-dispositivo",
     desc: "Acesse de qualquer navegador, em qualquer lugar. Sem instalação, sem VPN. Funciona no computador da fábrica, no celular do representante e no notebook do diretor.",
-    color: "#818cf8",
+    color: "#6366f1",
   },
   {
     icon: Lock,
@@ -35,21 +35,21 @@ const items = [
     icon: HeadphonesIcon,
     title: "Onboarding e suporte inclusos",
     desc: "Não entregamos um software e sumimos. Acompanhamos a implantação, treinamos a equipe e oferecemos suporte contínuo para garantir o sucesso do uso.",
-    color: "#0ea5e9",
+    color: "#0284c7",
   },
 ];
 
 export default function Diferenciais() {
   return (
-    <section className="section" id="produto">
+    <section className="section" id="produto" style={{ background: "#f8fafc" }}>
       <div className="container">
         <div style={{ textAlign: "center", marginBottom: 64 }}>
           <span className="badge" style={{ marginBottom: 16 }}>Por que AXION ONE?</span>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 800, letterSpacing: -1, marginBottom: 16 }}>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 800, letterSpacing: -1, marginBottom: 16, color: "#0f172a" }}>
             Pensado para quem<br />
             <span className="gradient-text">produz de verdade</span>
           </h2>
-          <p style={{ color: "#94a3b8", fontSize: 17, maxWidth: 520, margin: "0 auto" }}>
+          <p style={{ color: "#64748b", fontSize: 17, maxWidth: 520, margin: "0 auto" }}>
             Cada funcionalidade foi desenvolvida a partir das necessidades reais da indústria de processo.
           </p>
         </div>
@@ -58,12 +58,12 @@ export default function Diferenciais() {
           {items.map(item => {
             const Icon = item.icon;
             return (
-              <div key={item.title} style={{ display: "flex", gap: 20, padding: "28px 0", borderBottom: "1px solid #1e2d42" }}>
-                <div style={{ flexShrink: 0, width: 48, height: 48, borderRadius: 12, background: item.color + "15", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div key={item.title} style={{ display: "flex", gap: 20, padding: "28px 0", borderBottom: "1px solid #e2e8f0" }}>
+                <div style={{ flexShrink: 0, width: 48, height: 48, borderRadius: 12, background: item.color + "18", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <Icon size={22} color={item.color} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 8, color: "#f1f5f9" }}>{item.title}</h3>
+                  <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 8, color: "#0f172a" }}>{item.title}</h3>
                   <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.7 }}>{item.desc}</p>
                 </div>
               </div>
