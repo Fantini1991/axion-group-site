@@ -4,7 +4,7 @@ const planos = [
   {
     name: "Gratuito",
     price: "R$ 0",
-    period: "para sempre",
+    period: "",
     desc: "Ideal para conhecer o sistema sem compromisso.",
     color: "#64748b",
     features: [
