@@ -95,4 +95,38 @@ button { font-family: inherit; cursor: pointer; }
 @media (max-width: 768px) {
   .section { padding: 64px 0; }
   .section-sm { padding: 48px 0; }
+
+  /* Container com padding menor */
+  .container { padding: 0 16px; }
+
+  /* Navbar */
+  .desktop-nav { display: none !important; }
+  .mobile-toggle { display: flex !important; }
+
+  /* Hero — stats menos espalhados */
+  .hero-stats { gap: 24px !important; }
+
+  /* Hero — mock dashboard some em telas pequenas */
+  .hero-dashboard-preview { display: none !important; }
+
+  /* Footer — 2 colunas em tablet */
+  .footer-cols { grid-template-columns: 1fr 1fr !important; }
+}
+
+@media (max-width: 480px) {
+  /* Footer — 1 coluna em celular */
+  .footer-cols { grid-template-columns: 1fr !important; gap: 32px !important; }
+
+  /* Formulário de contato — campos empilhados */
+  .form-grid-2 { grid-template-columns: 1fr !important; }
+
+  /* Botões do Hero side a side ficam finos — empilha */
+  .fade-up-4 > .btn-primary,
+  .fade-up-4 > .btn-ghost { width: 100%; justify-content: center; }
+
+  /* Stats do Hero em grade 2x2 */
+  .hero-stats { display: grid !important; grid-template-columns: 1fr 1fr; gap: 20px !important; }
+
+  /* Título Hero — letter-spacing menor */
+  .hero-stats + * h1 { letter-spacing: -1px !important; }
 }

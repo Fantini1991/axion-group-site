@@ -47,7 +47,7 @@ export default function Hero() {
         </div>
 
         {/* Stats */}
-        <div className="fade-up-4" style={{ display: "flex", gap: 48, justifyContent: "center", flexWrap: "wrap", marginBottom: 72 }}>
+        <div className="fade-up-4 hero-stats" style={{ display: "flex", gap: 48, justifyContent: "center", flexWrap: "wrap", marginBottom: 72 }}>
           {[
             { val: "13+", label: "Módulos integrados" },
             { val: "100%", label: "Web — acesso de qualquer lugar" },
@@ -62,7 +62,7 @@ export default function Hero() {
         </div>
 
         {/* Mock dashboard preview */}
-        <div style={{
+        <div className="hero-dashboard-preview" style={{
           borderRadius: 20, overflow: "hidden",
           border: "1px solid rgba(255,255,255,0.1)",
           boxShadow: "0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(56,189,248,0.06)",
@@ -78,7 +78,7 @@ export default function Hero() {
             </div>
           </div>
           {/* Dashboard — light */}
-          <div style={{ background: "#f8fafc", display: "grid", gridTemplateColumns: "180px 1fr", minHeight: 320 }}>
+          <div className="hero-dashboard-grid" style={{ background: "#f8fafc", display: "grid", gridTemplateColumns: "180px 1fr", minHeight: 320 }}>
             {/* Sidebar navy */}
             <div style={{ background: "#0c1b33", padding: 16 }}>
               <div style={{ fontSize: 11, fontWeight: 900, color: "#38bdf8", marginBottom: 18, letterSpacing: 0.5 }}>AXION ONE</div>

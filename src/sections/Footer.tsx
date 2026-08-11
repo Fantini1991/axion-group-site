@@ -3,7 +3,7 @@ export default function Footer() {
   return (
     <footer style={{ background: "#060f1e", borderTop: "1px solid rgba(255,255,255,0.05)", padding: "48px 0 32px" }}>
       <div className="container">
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 40, marginBottom: 48 }}>
+        <div className="footer-cols" style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 40, marginBottom: 48 }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
               <div style={{ width: 32, height: 32, borderRadius: 8, background: "#38bdf8", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 14, color: "#060f1e" }}>A</div>
@@ -38,11 +38,6 @@ export default function Footer() {
         </div>
       </div>
 
-      <style>{`
-        @media (max-width: 768px) {
-          footer .container > div:first-child { grid-template-columns: 1fr 1fr !important; }
-        }
-      `}</style>
     </footer>
   );
 }

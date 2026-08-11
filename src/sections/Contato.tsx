@@ -117,7 +117,7 @@ export default function Contato() {
                 <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4, color: "white" }}>Agendar demonstração</h3>
                 <p style={{ fontSize: 13, color: "rgba(255,255,255,0.35)", marginBottom: 8 }}>Preencha o formulário e nossa equipe entrará em contato.</p>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div className="form-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                   <div>
                     <label style={{ display: "block", fontSize: 11, color: "rgba(255,255,255,0.45)", marginBottom: 5, fontWeight: 600 }}>SEU NOME *</label>
                     <input required value={form.nome} onChange={e => set("nome", e.target.value)} placeholder="João Silva" style={inp} />
