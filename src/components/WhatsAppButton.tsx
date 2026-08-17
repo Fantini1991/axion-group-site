@@ -1,4 +1,4 @@
-const WHATSAPP_NUMBER = "5511999999999"; // substituir pelo número real
+const WHATSAPP_NUMBER = "5511964468588";
 const MESSAGE = encodeURIComponent("Olá! Gostaria de saber mais sobre o AXION ONE.");
 
 export default function WhatsAppButton() {
