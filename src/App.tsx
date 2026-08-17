@@ -1,12 +1,14 @@
 import './index.css';
 import Navbar from './components/Navbar';
 import CtaBanner from './components/CtaBanner';
+import WhatsAppButton from './components/WhatsAppButton';
 import Hero from './sections/Hero';
 import Diferenciais from './sections/Diferenciais';
 import DemoVideo from './sections/DemoVideo';
 import Screenshots from './sections/Screenshots';
 import ParaQuemE from './sections/ParaQuemE';
 import Modulos from './sections/Modulos';
+import FAQ from './sections/FAQ';
 import Planos from './sections/Planos';
 import Sobre from './sections/Sobre';
 import Contato from './sections/Contato';
@@ -25,11 +27,13 @@ export default function App() {
         <ParaQuemE />
         <CtaBanner text="Pronto para ter tudo integrado em uma só plataforma?" />
         <Modulos />
+        <FAQ />
         <Planos />
         <Sobre />
         <Contato />
       </main>
       <Footer />
+      <WhatsAppButton />
     </>
   );
 }
