@@ -1,19 +1,84 @@
 import { FlaskConical, ShoppingCart, Package, Factory, Truck, BarChart3, DollarSign, FileText, Settings, Wrench, Users, CheckCircle2, TrendingUp } from "lucide-react";
 
 const modulos = [
-  { icon: FlaskConical, label: "Laboratório / P&D", desc: "Fórmulas, revisões, comparativos, especificações e histórico completo de desenvolvimento.", color: "#0284c7" },
-  { icon: CheckCircle2, label: "Qualidade", desc: "CQ de matéria-prima, CQ final, certificados de análise e gestão de não conformidades.", color: "#16a34a" },
-  { icon: ShoppingCart, label: "Compras", desc: "Solicitações, cotações, pedidos de compra, aprovações e histórico de fornecedores.", color: "#d97706" },
-  { icon: Package, label: "Estoque", desc: "Recebimento com NF-e, lotes, validade, rastreabilidade, mínimo/máximo e inventário.", color: "#7c3aed" },
-  { icon: TrendingUp, label: "PCP", desc: "Ordens de produção, verificação de disponibilidade, apontamento e indicadores.", color: "#2563eb" },
-  { icon: Factory, label: "Produção", desc: "Terminal de apontamento, acompanhamento em tempo real e controle de rendimento.", color: "#059669" },
-  { icon: Users, label: "Vendas / Comercial", desc: "Pedidos, orçamentos, assistência técnica, CRM, preços de produtos e simulador de margem.", color: "#db2777" },
-  { icon: DollarSign, label: "Financeiro", desc: "Contas a pagar e receber, fluxo de caixa, DRE e centro de custos.", color: "#4f46e5" },
-  { icon: FileText, label: "Fiscal", desc: "Tabela IBPT automática, ST por estado, DIFAL interestadual e regras tributárias.", color: "#dc2626" },
-  { icon: Truck, label: "Logística", desc: "Expedição, transporte, rastreamento de entregas e controle de devoluções.", color: "#0284c7" },
-  { icon: BarChart3, label: "BI / Indicadores", desc: "Dashboards por área, KPIs de produção, qualidade, vendas e custos.", color: "#7c3aed" },
-  { icon: Wrench, label: "Manutenção / PCM", desc: "Preventiva, corretiva, ordens de serviço, calibração e MTBF/MTTR.", color: "#ea580c" },
-  { icon: Settings, label: "Configurações", desc: "Multi-empresa, usuários, permissões por perfil, auditoria e integrações.", color: "#475569" },
+  {
+    icon: FlaskConical,
+    label: "Laboratório / P&D",
+    desc: "Fórmulas, revisões, aprovações e histórico completo. Colorimetria, comparação ilimitada (kg e litros), similaridade entre fórmulas, diferença de matérias-primas e controle de densidade por produto.",
+    color: "#0284c7",
+  },
+  {
+    icon: CheckCircle2,
+    label: "Qualidade",
+    desc: "CQ de matéria-prima e produto acabado, certificados de análise, banco de testes, métodos de análise, especificações de MP e integração direta com a produção e laboratório.",
+    color: "#16a34a",
+  },
+  {
+    icon: ShoppingCart,
+    label: "Compras",
+    desc: "Solicitações, cotações, pedidos de compra, fluxo de aprovação multinível, catálogo digital de matérias-primas e histórico completo por fornecedor.",
+    color: "#d97706",
+  },
+  {
+    icon: Package,
+    label: "Estoque",
+    desc: "Recebimento com conferência de NF-e, controle de lotes e validade, localização por endereço, rastreabilidade completa, mínimo/máximo, inventário, embalagens e produtos acabados.",
+    color: "#7c3aed",
+  },
+  {
+    icon: TrendingUp,
+    label: "PCP",
+    desc: "Ordens de produção, roteiros de fabricação, calendário de turnos, paradas planejadas e não planejadas, estoque de MP, requisição de MP e KPIs de planejamento.",
+    color: "#2563eb",
+  },
+  {
+    icon: Factory,
+    label: "Produção",
+    desc: "Processos de fabricação, apontamento em tempo real e macro, consumo previsto vs. real, eficiência de linha, perdas, reprocesso, rendimento e controle de GGF (Gastos Gerais de Fabricação).",
+    color: "#059669",
+  },
+  {
+    icon: Users,
+    label: "Vendas / Comercial",
+    desc: "Pedidos, orçamentos, assistência técnica, CRM, tabela de preços, simulador de margem e fórmula comercial integrada ao laboratório.",
+    color: "#db2777",
+  },
+  {
+    icon: DollarSign,
+    label: "Financeiro",
+    desc: "Contas a pagar e receber, fluxo de caixa, DRE, conciliação bancária, plano de contas, centro de custos, análise de custos, apuração de resultado e margens por produto.",
+    color: "#4f46e5",
+  },
+  {
+    icon: FileText,
+    label: "Fiscal",
+    desc: "Nota Fiscal integrada, CFOP, NCM, ICMS, IPI, PIS/COFINS, tabela IBPT automática, ST por estado com MVA, DIFAL interestadual e regras tributárias configuráveis.",
+    color: "#dc2626",
+  },
+  {
+    icon: Truck,
+    label: "Logística",
+    desc: "Expedição, transporte, rastreamento de entregas, controle de devoluções e integração com NF-e de saída.",
+    color: "#0284c7",
+  },
+  {
+    icon: BarChart3,
+    label: "BI / Indicadores",
+    desc: "Dashboards por área, KPIs de produção, qualidade, vendas, custos e manutenção — tudo em tempo real e acessível de qualquer dispositivo.",
+    color: "#7c3aed",
+  },
+  {
+    icon: Wrench,
+    label: "Manutenção / PCM",
+    desc: "Manutenção preventiva e corretiva, ordens de serviço, checklist, cronograma, histórico de falhas, cadastro de técnicos e equipamentos, MTBF/MTTR e calibração.",
+    color: "#ea580c",
+  },
+  {
+    icon: Settings,
+    label: "Configurações",
+    desc: "Multi-empresa, permissões granulares por módulo e tela, autenticação em dois fatores (2FA), controle de sessões, auditoria completa de ações e requisições intersetoriais.",
+    color: "#475569",
+  },
 ];
 
 export default function Modulos() {

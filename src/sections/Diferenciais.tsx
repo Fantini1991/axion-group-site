@@ -10,7 +10,7 @@ const items = [
   {
     icon: Shield,
     title: "Fiscal automático e atualizado",
-    desc: "Tabela IBPT importada diretamente, ST por estado com MVA configurável e DIFAL interestadual calculado automaticamente. Conformidade fiscal sem configuração manual.",
+    desc: "Tabela IBPT importada diretamente, ST por estado com MVA configurável, DIFAL interestadual calculado automaticamente, NF-e integrada com CFOP, NCM, IPI, PIS/COFINS e ICMS. Conformidade fiscal sem configuração manual.",
     color: "#22c55e",
   },
   {
@@ -27,8 +27,8 @@ const items = [
   },
   {
     icon: Lock,
-    title: "Multi-empresa e controle de acesso",
-    desc: "Gerencie múltiplas unidades de negócio com dados isolados. Defina permissões por módulo, tela e usuário — com auditoria completa de todas as ações.",
+    title: "Segurança e controle de acesso avançados",
+    desc: "Multi-empresa com dados isolados, permissões granulares por módulo e tela, autenticação em dois fatores (2FA), controle de sessões ativas e auditoria completa de todas as ações do sistema.",
     color: "#ec4899",
   },
   {
