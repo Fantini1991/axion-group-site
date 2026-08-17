@@ -29,8 +29,8 @@ export default function Hero() {
         </div>
 
         <h1 className="fade-up-2" style={{ fontSize: "clamp(36px, 6vw, 70px)", fontWeight: 900, lineHeight: 1.1, letterSpacing: -2, marginBottom: 24, color: "white" }}>
-          Do laboratório ao faturamento,<br />
-          em <span style={{ color: "#38bdf8" }}>uma só plataforma</span>
+          Do laboratório ao faturamento —<br />
+          <span style={{ color: "#38bdf8" }}>feito para sua indústria</span>
         </h1>
 
         <p className="fade-up-3" style={{ fontSize: "clamp(16px, 2vw, 19px)", color: "rgba(255,255,255,0.55)", maxWidth: 600, margin: "0 auto 40px", lineHeight: 1.75 }}>

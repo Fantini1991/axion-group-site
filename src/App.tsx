@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import Diferenciais from './sections/Diferenciais';
 import DemoVideo from './sections/DemoVideo';
+import Screenshots from './sections/Screenshots';
 import Modulos from './sections/Modulos';
 import Planos from './sections/Planos';
 import Sobre from './sections/Sobre';
@@ -17,6 +18,7 @@ export default function App() {
         <Hero />
         <Diferenciais />
         <DemoVideo />
+        <Screenshots />
         <Modulos />
         <Planos />
         <Sobre />
