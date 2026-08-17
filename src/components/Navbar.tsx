@@ -3,6 +3,7 @@ import { Menu, X } from "lucide-react";
 
 const links = [
   { label: "Produto", href: "#produto" },
+  { label: "Sistema", href: "#sistema" },
   { label: "Módulos", href: "#modulos" },
   { label: "Planos", href: "#planos" },
   { label: "Sobre", href: "#sobre" },
