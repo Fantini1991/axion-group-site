@@ -19,13 +19,13 @@ const planos = [
   },
   {
     name: "Mensal",
-    price: "Sob consulta",
-    period: "por mês",
+    price: "R$ 1.000",
+    period: "por mês · até 10 usuários",
     desc: "Para indústrias em crescimento que precisam de flexibilidade.",
     color: "#0284c7",
     features: [
       "Todos os módulos ativos",
-      "Multi-usuário ilimitado",
+      "Até 10 usuários",
       "Fiscal completo (IBPT, ST, DIFAL)",
       "Suporte prioritário",
       "Onboarding incluso",
@@ -36,13 +36,13 @@ const planos = [
   },
   {
     name: "Anual",
-    price: "Melhor custo",
-    period: "economia de até 20%",
+    price: "R$ 10.000",
+    period: "por ano · economia de 17%",
     desc: "Para quem já decidiu e quer o melhor custo-benefício.",
     color: "#6366f1",
     features: [
       "Tudo do plano Mensal",
-      "Desconto de até 20%",
+      "Até 10 usuários",
       "Treinamento aprofundado",
       "Gerente de conta dedicado",
       "SLA garantido",
