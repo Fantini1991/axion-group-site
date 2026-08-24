@@ -1,5 +1,5 @@
 const WHATSAPP_NUMBER = "5511964468588";
-const MESSAGE = encodeURIComponent("Olá! Gostaria de saber mais sobre o AXION ONE.");
+const MESSAGE = encodeURIComponent("Olá! Gostaria de saber mais sobre os sistemas da AXION GROUP.");
 
 export default function WhatsAppButton() {
   return (

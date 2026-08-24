@@ -1,36 +1,24 @@
+import { Routes, Route } from 'react-router-dom';
 import './index.css';
 import Navbar from './components/Navbar';
-import CtaBanner from './components/CtaBanner';
 import WhatsAppButton from './components/WhatsAppButton';
-import Hero from './sections/Hero';
-import Diferenciais from './sections/Diferenciais';
-import DemoVideo from './sections/DemoVideo';
-import Screenshots from './sections/Screenshots';
-import ParaQuemE from './sections/ParaQuemE';
-import Modulos from './sections/Modulos';
-import FAQ from './sections/FAQ';
-import Planos from './sections/Planos';
-import Sobre from './sections/Sobre';
-import Contato from './sections/Contato';
+import ScrollToHash from './components/ScrollToHash';
 import Footer from './sections/Footer';
+import Home from './pages/Home';
+import AxionOne from './pages/AxionOne';
+import Sistemas from './pages/Sistemas';
 
 export default function App() {
   return (
     <>
+      <ScrollToHash />
       <Navbar />
       <main>
-        <Hero />
-        <Diferenciais />
-        <CtaBanner text="Quer ver como o AXION ONE resolve os gargalos da sua indústria?" />
-        <DemoVideo />
-        <Screenshots />
-        <ParaQuemE />
-        <CtaBanner text="Pronto para ter tudo integrado em uma só plataforma?" />
-        <Modulos />
-        <FAQ />
-        <Planos />
-        <Sobre />
-        <Contato />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/axion-one" element={<AxionOne />} />
+          <Route path="/sistemas" element={<Sistemas />} />
+        </Routes>
       </main>
       <Footer />
       <WhatsAppButton />

@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 const links = [
-  { label: "Produto", href: "#produto" },
-  { label: "Sistema", href: "#sistema" },
-  { label: "Módulos", href: "#modulos" },
-  { label: "Planos", href: "#planos" },
-  { label: "Sobre", href: "#sobre" },
-  { label: "Contato", href: "#contato" },
+  { label: "Início", to: "/" },
+  { label: "Sistemas", to: "/sistemas" },
+  { label: "Axion One", to: "/axion-one" },
+  { label: "Nossa história", to: "/#historia" },
+  { label: "Contato", to: "/#contato" },
 ];
 
 export default function Navbar() {
@@ -30,25 +30,25 @@ export default function Navbar() {
     }}>
       <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 68 }}>
         {/* Logo */}
-        <a href="#" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <Link to="/" style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <img src="/favicon.svg" alt="Axion Group" style={{ width: 40, height: 40, borderRadius: 10, boxShadow: "0 0 0 1px rgba(56,189,248,0.3), 0 2px 8px rgba(0,0,0,0.4)" }} />
           <span style={{ fontWeight: 800, fontSize: 17, letterSpacing: -0.3, color: "white" }}>
             AXION <span style={{ color: "#38bdf8" }}>GROUP</span>
           </span>
-        </a>
+        </Link>
 
         {/* Desktop nav */}
         <nav style={{ display: "flex", gap: 32, alignItems: "center" }} className="desktop-nav">
           {links.map(l => (
-            <a key={l.label} href={l.href} style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", fontWeight: 500, transition: "color 0.2s" }}
+            <Link key={l.label} to={l.to} style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", fontWeight: 500, transition: "color 0.2s" }}
               onMouseEnter={e => { (e.target as HTMLAnchorElement).style.color = "white"; }}
               onMouseLeave={e => { (e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.55)"; }}>
               {l.label}
-            </a>
+            </Link>
           ))}
-          <a href="#contato" className="btn-primary" style={{ padding: "10px 22px", fontSize: 14 }}>
+          <Link to="/#contato" className="btn-primary" style={{ padding: "10px 22px", fontSize: 14 }}>
             Agendar Demo
-          </a>
+          </Link>
         </nav>
 
         {/* Mobile toggle */}
@@ -61,14 +61,14 @@ export default function Navbar() {
       {open && (
         <div style={{ background: "#0c1b33", borderTop: "1px solid rgba(255,255,255,0.07)", padding: "16px 24px 24px" }}>
           {links.map(l => (
-            <a key={l.label} href={l.href} onClick={() => setOpen(false)}
+            <Link key={l.label} to={l.to} onClick={() => setOpen(false)}
               style={{ display: "block", padding: "12px 0", fontSize: 15, color: "rgba(255,255,255,0.55)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
               {l.label}
-            </a>
+            </Link>
           ))}
-          <a href="#contato" className="btn-primary" style={{ marginTop: 16, width: "100%", justifyContent: "center" }}>
+          <Link to="/#contato" onClick={() => setOpen(false)} className="btn-primary" style={{ marginTop: 16, width: "100%", justifyContent: "center" }}>
             Agendar Demo
-          </a>
+          </Link>
         </div>
       )}
 
