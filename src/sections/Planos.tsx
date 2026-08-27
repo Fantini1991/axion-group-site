@@ -19,13 +19,14 @@ const planos = [
   },
   {
     name: "Mensal",
-    price: "R$ 1.000",
-    period: "por mês · até 10 usuários",
-    desc: "Para indústrias em crescimento que precisam de flexibilidade.",
+    price: "R$ 500",
+    period: "por mês · 5 usuários inclusos",
+    desc: "Para indústrias em crescimento que precisam de flexibilidade. Usuários adicionais por R$ 50/mês cada.",
     color: "#0284c7",
     features: [
       "Todos os módulos ativos",
-      "Até 10 usuários",
+      "5 usuários inclusos",
+      "+ R$ 50 por usuário adicional",
       "Fiscal completo (IBPT, ST, DIFAL)",
       "Suporte prioritário",
       "Onboarding incluso",
@@ -33,23 +34,6 @@ const planos = [
     ],
     cta: "Falar com consultor",
     highlight: true,
-  },
-  {
-    name: "Anual",
-    price: "R$ 10.000",
-    period: "por ano · economia de 17%",
-    desc: "Para quem já decidiu e quer o melhor custo-benefício.",
-    color: "#6366f1",
-    features: [
-      "Tudo do plano Mensal",
-      "Até 10 usuários",
-      "Treinamento aprofundado",
-      "Gerente de conta dedicado",
-      "SLA garantido",
-      "Personalização de módulos",
-    ],
-    cta: "Falar com consultor",
-    highlight: false,
   },
 ];
 
@@ -68,7 +52,7 @@ export default function Planos() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 20 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 20, maxWidth: 760, margin: "0 auto" }}>
           {planos.map(p => (
             <div key={p.name} style={{
               position: "relative", display: "flex", flexDirection: "column",
