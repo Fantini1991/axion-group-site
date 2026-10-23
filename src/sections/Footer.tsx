@@ -33,7 +33,7 @@ export default function Footer() {
         </div>
 
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 24, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
-          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.15)" }}>© {year} AXION GROUP · Todos os direitos reservados · Axion é uma marca de GUILHERME LYONN LOGLI FANTINI LTDA · CNPJ 60.491.874/0001-10</span>
+          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.15)" }}>© {year} AXION GROUP · Todos os direitos reservados · Axion é uma marca da EXPERT CONSULTORIA · CNPJ 60.491.874/0001-10</span>
           <span style={{ fontSize: 12, color: "rgba(255,255,255,0.15)" }}>Feito com ❤️ para a indústria brasileira</span>
         </div>
       </div>
