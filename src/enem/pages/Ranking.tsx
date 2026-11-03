@@ -1,14 +1,34 @@
 import { useEffect, useState } from "react";
 import { ranking } from "../api";
 import { useEnem } from "../contexto";
-import { AREAS, type Area, type LinhaRanking } from "../types";
+import { PROVAS } from "../data/provas";
+import type { LinhaRanking } from "../types";
 
-type Criterio = "geral" | "objetiva" | "redacao" | Area;
+type Criterio = "geral" | "P1" | "P2" | "P3" | "redacao" | "objetiva";
 
 const valor = (l: LinhaRanking, c: Criterio) =>
-  c === "geral" ? l.notaGeral : c === "objetiva" ? l.melhorMedia : c === "redacao" ? l.melhorRedacao : l.melhoresAreas[c] ?? 0;
+  c === "geral"
+    ? l.notaGeral
+    : c === "redacao"
+      ? l.melhorRedacao
+      : c === "objetiva"
+        ? l.melhorMedia
+        : l.porProva[c]?.nota ?? 0;
 
 const MEDALHAS = ["🥇", "🥈", "🥉"];
+
+function CelulaProva({ l, id, destaque }: { l: LinhaRanking; id: string; destaque: boolean }) {
+  const p = l.porProva[id];
+  if (!p || (p.objetiva === null && p.redacao === null)) return <td className="num sub">—</td>;
+  return (
+    <td className="num" style={{ fontWeight: destaque ? 800 : 400 }}>
+      {p.nota.toFixed(1)}
+      <span className="sub" style={{ display: "block", fontSize: 11, fontWeight: 400 }}>
+        obj {p.objetiva?.toFixed(0) ?? "—"} · red {p.redacao ?? "—"}
+      </span>
+    </td>
+  );
+}
 
 export default function Ranking() {
   const { usuario, status } = useEnem();
@@ -20,32 +40,39 @@ export default function Ranking() {
     ranking().then(setLinhas).catch((e) => setErro(e.message));
   }, []);
 
-  const areaSel = AREAS.find((a) => a.id === criterio);
   const ordenadas = linhas ? [...linhas].sort((a, b) => valor(b, criterio) - valor(a, criterio)) : [];
+  const abas: { id: Criterio; nome: string }[] = [
+    { id: "geral", nome: "Geral" },
+    ...PROVAS.map((p) => ({ id: p.id, nome: p.nome })),
+    { id: "redacao", nome: "Melhor redação" },
+    { id: "objetiva", nome: "Melhor objetiva" },
+  ];
 
   return (
     <>
       <h1>🏆 Ranking</h1>
       <p className="sub" style={{ marginBottom: 16 }}>
-        A <strong>nota geral</strong> segue a média simples usada no SISU: (melhor média das 4 áreas × 4 + melhor redação) ÷ 5.
-        Quem ainda não fez redação conta com zero nela.
+        A nota de cada prova segue a média usada no SISU: <strong>(objetiva × 4 + redação) ÷ 5</strong>. A <strong>nota geral</strong>{" "}
+        é a média das 3 provas — prova ou redação não feita conta como zero. Vale sempre a 1ª tentativa.
       </p>
       {status.modo === "local" && (
         <div className="enem-aviso">Modo local: o ranking mostra apenas as contas criadas neste navegador.</div>
       )}
 
       <div className="enem-abas">
-        <button className={criterio === "geral" ? "ativo" : ""} onClick={() => setCriterio("geral")}>Geral</button>
-        <button className={criterio === "objetiva" ? "ativo" : ""} onClick={() => setCriterio("objetiva")}>Prova objetiva</button>
-        <button className={criterio === "redacao" ? "ativo" : ""} onClick={() => setCriterio("redacao")}>Redação</button>
-        {AREAS.map((a) => (
-          <button key={a.id} className={criterio === a.id ? "ativo" : ""} onClick={() => setCriterio(a.id)}>{a.curto}</button>
+        {abas.map((a) => (
+          <button key={a.id} className={criterio === a.id ? "ativo" : ""} onClick={() => setCriterio(a.id)}>{a.nome}</button>
         ))}
       </div>
+      {(criterio === "redacao" || criterio === "objetiva") && (
+        <p className="sub" style={{ fontSize: 13, marginBottom: 10 }}>
+          Esta aba considera a melhor nota de qualquer tentativa, incluindo treinos.
+        </p>
+      )}
 
       {erro && <div className="enem-erro">{erro}</div>}
       {!linhas && !erro && <p className="sub">Carregando…</p>}
-      {linhas && linhas.length === 0 && <p className="sub">Ninguém fez simulado ainda. Seja o primeiro!</p>}
+      {linhas && linhas.length === 0 && <p className="sub">Ninguém fez prova ainda. Seja o primeiro!</p>}
 
       {linhas && linhas.length > 0 && (
         <div className="enem-card enem-rolagem">
@@ -54,12 +81,9 @@ export default function Ranking() {
               <tr>
                 <th>#</th>
                 <th>Nome</th>
-                {areaSel && <th className="num">{areaSel.curto}</th>}
                 <th className="num">Geral</th>
-                <th className="num">Objetiva</th>
-                <th className="num">Redação</th>
-                <th className="num">Simulados</th>
-                <th className="num">Redações</th>
+                {PROVAS.map((p) => <th key={p.id} className="num">{p.nome}</th>)}
+                <th className="num">Melhor redação</th>
               </tr>
             </thead>
             <tbody>
@@ -70,12 +94,9 @@ export default function Ranking() {
                     <strong>{l.nome}</strong>
                     <span className="sub" style={{ fontSize: 12, display: "block" }}>@{l.username}</span>
                   </td>
-                  {areaSel && <td className="num" style={{ fontWeight: 800 }}>{valor(l, criterio).toFixed(1)}</td>}
                   <td className="num" style={{ fontWeight: criterio === "geral" ? 800 : 400 }}>{l.notaGeral.toFixed(1)}</td>
-                  <td className="num" style={{ fontWeight: criterio === "objetiva" ? 800 : 400 }}>{l.melhorMedia.toFixed(1)}</td>
+                  {PROVAS.map((p) => <CelulaProva key={p.id} l={l} id={p.id} destaque={criterio === p.id} />)}
                   <td className="num" style={{ fontWeight: criterio === "redacao" ? 800 : 400 }}>{l.melhorRedacao}</td>
-                  <td className="num">{l.simulados}</td>
-                  <td className="num">{l.redacoes}</td>
                 </tr>
               ))}
             </tbody>

@@ -90,8 +90,8 @@ export const matematica: Questao[] = [
     disciplina: "Matemática",
     assunto: "Função afim",
     dificuldade: 1,
-    recorrencia: "Função do 1º grau em situações de tarifa (táxi, aplicativo, conta de água) é muito comum.",
-    texto: "Em uma cidade, a corrida de táxi custa R$ 5,00 de bandeirada (valor fixo) mais R$ 2,50 por quilômetro rodado.",
+    recorrencia: "Função do 1º grau em situações de tarifa (aplicativos, planos de celular, conta de água) é muito comum.",
+    texto: "Em um aplicativo de transporte, a corrida custa uma taxa fixa de R$ 5,00 mais R$ 2,50 por quilômetro rodado.",
     enunciado: "Um passageiro pagou R$ 42,50 por uma corrida. A distância percorrida foi de",
     alternativas: ["12 km.", "15 km.", "17 km.", "19 km.", "20 km."],
     correta: 1,
@@ -100,7 +100,7 @@ export const matematica: Questao[] = [
     comentarios: [
       "Errada: 12 km custaria 5 + 30 = R$ 35,00.",
       "Correta: (42,50 − 5,00) ÷ 2,50 = 15 km.",
-      "Errada: 17 km dividiria 42,50 por 2,50, esquecendo de tirar a bandeirada.",
+      "Errada: 17 km dividiria 42,50 por 2,50, esquecendo de tirar a taxa fixa.",
       "Errada: 19 km custaria 5 + 47,50 = R$ 52,50.",
       "Errada: 20 km custaria 5 + 50 = R$ 55,00.",
     ],
@@ -153,9 +153,9 @@ export const matematica: Questao[] = [
     disciplina: "Matemática",
     assunto: "Matemática financeira — juros compostos",
     dificuldade: 2,
-    recorrencia: "Juros simples x compostos, parcelamentos e cartão de crédito são temas frequentes.",
+    recorrencia: "Juros simples x compostos, parcelamentos, Pix parcelado e cartão de crédito são temas frequentes de educação financeira.",
     enunciado:
-      "Uma pessoa deixou de pagar uma conta de R$ 1 000,00, que passou a ser corrigida a juros compostos de 10% ao mês. Após 2 meses, o valor da dívida será de",
+      "Uma pessoa não pagou R$ 1 000,00 da fatura do cartão de crédito e entrou no crédito rotativo, com juros compostos de 10% ao mês. Sem novos pagamentos nem compras, após 2 meses a dívida será de",
     alternativas: ["R$ 1 020,00.", "R$ 1 100,00.", "R$ 1 200,00.", "R$ 1 210,00.", "R$ 2 000,00."],
     correta: 3,
     resolucao:

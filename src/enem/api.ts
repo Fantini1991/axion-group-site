@@ -1,4 +1,5 @@
-import { AREAS, type CorrecaoRedacao, type LinhaRanking, type ResultadoProva, type ResultadoRedacao, type Usuario } from "./types";
+import { linhaDoRanking } from "./ranking";
+import { type CorrecaoRedacao, type LinhaRanking, type ResultadoProva, type ResultadoRedacao, type Usuario } from "./types";
 
 /**
  * Camada de dados do simulado.
@@ -181,7 +182,7 @@ async function salvar(tipo: "provas" | "redacoes", resultado: ResultadoProva | R
     return;
   }
   const chave = `${L}${tipo}:${usuarioLogado().username}`;
-  gravar(chave, [resultado, ...ler<unknown[]>(chave, [])].slice(0, 50));
+  gravar(chave, [resultado, ...ler<unknown[]>(chave, [])].slice(0, 200));
 }
 
 export const salvarProva = (r: ResultadoProva) => salvar("provas", r);
@@ -197,27 +198,15 @@ export async function historico(): Promise<{ provas: ResultadoProva[]; redacoes:
 export async function ranking(): Promise<LinhaRanking[]> {
   const { modo } = await obterStatus();
   if (modo === "online") return (await chamar<{ linhas: LinhaRanking[] }>("ranking")).linhas;
-  const usuarios = usuariosLocais();
-  return Object.entries(usuarios)
-    .map(([username, u]) => {
-      const provas = ler<ResultadoProva[]>(`${L}provas:${username}`, []);
-      const redacoes = ler<ResultadoRedacao[]>(`${L}redacoes:${username}`, []);
-      const melhorMedia = Math.max(0, ...provas.map((p) => p.media));
-      const melhorRedacao = Math.max(0, ...redacoes.map((r) => r.correcao.notaTotal));
-      const melhoresAreas = Object.fromEntries(
-        AREAS.map((a) => [a.id, Math.max(0, ...provas.map((p) => p.notas[a.id] ?? 0))]),
-      ) as LinhaRanking["melhoresAreas"];
-      return {
+  return Object.entries(usuariosLocais())
+    .map(([username, u]) =>
+      linhaDoRanking(
         username,
-        nome: u.nome,
-        simulados: provas.length,
-        redacoes: redacoes.length,
-        melhorMedia,
-        melhorRedacao,
-        melhoresAreas,
-        notaGeral: Math.round(((melhorMedia * 4 + melhorRedacao) / 5) * 10) / 10,
-      };
-    })
+        u.nome,
+        ler<ResultadoProva[]>(`${L}provas:${username}`, []),
+        ler<ResultadoRedacao[]>(`${L}redacoes:${username}`, []),
+      ),
+    )
     .sort((a, b) => b.notaGeral - a.notaGeral);
 }
 

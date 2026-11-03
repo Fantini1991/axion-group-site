@@ -24,8 +24,8 @@ function Topo() {
         {usuario && (
           <nav className="enem-nav">
             <NavLink to="/enem" end className={({ isActive }) => (isActive ? "ativo" : "")}>Início</NavLink>
-            <NavLink to="/enem/prova" className={({ isActive }) => (isActive ? "ativo" : "")}>Prova</NavLink>
-            <NavLink to="/enem/redacao" className={({ isActive }) => (isActive ? "ativo" : "")}>Redação</NavLink>
+            <NavLink to="/enem/prova" className={({ isActive }) => (isActive ? "ativo" : "")}>Provas</NavLink>
+            <NavLink to="/enem/redacao" className={({ isActive }) => (isActive ? "ativo" : "")}>Treino de redação</NavLink>
             <NavLink to="/enem/ranking" className={({ isActive }) => (isActive ? "ativo" : "")}>Ranking</NavLink>
             <button
               onClick={async () => {

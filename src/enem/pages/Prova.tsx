@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { salvarProva } from "../api";
+import { Link } from "react-router-dom";
+import { historico, salvarProva } from "../api";
 import { useEnem } from "../contexto";
-import { buscarQuestao, corrigirProva, LETRAS, montarProva, QUESTOES_POR_AREA } from "../prova";
-import { AREAS, type Questao } from "../types";
+import { PROVAS } from "../data/provas";
+import { BANCO, buscarQuestao, corrigirProva, LETRAS, montarProva, QUESTOES_POR_AREA, questoesDaProva } from "../prova";
+import { AREAS, type Questao, type ResultadoProva, type ResultadoRedacao } from "../types";
 
 interface EmAndamento {
-  modo: "rapido" | "completo";
+  modo: ResultadoProva["modo"];
+  provaId?: string;
   ids: string[];
   respostas: Record<string, number>;
   atual: number;
@@ -35,6 +38,11 @@ export default function Prova() {
   });
   const [agora, setAgora] = useState(() => Date.now());
   const [enviando, setEnviando] = useState(false);
+  const [feitas, setFeitas] = useState<{ provas: ResultadoProva[]; redacoes: ResultadoRedacao[] } | null>(null);
+
+  useEffect(() => {
+    if (!prova) historico().then(setFeitas).catch(() => setFeitas({ provas: [], redacoes: [] }));
+  }, [prova]);
   const [erro, setErro] = useState("");
 
   useEffect(() => {
@@ -63,6 +71,12 @@ export default function Prova() {
     window.scrollTo(0, 0);
   }
 
+  function iniciarOficial(provaId: string) {
+    const qs = questoesDaProva(provaId);
+    setProva({ modo: "oficial", provaId, ids: qs.map((q) => q.id), respostas: {}, atual: 0, inicio: Date.now() });
+    window.scrollTo(0, 0);
+  }
+
   async function finalizar() {
     if (!prova) return;
     const emBranco = questoes.length - Object.keys(prova.respostas).length;
@@ -74,6 +88,7 @@ export default function Prova() {
       questoes.map((q) => ({ questaoId: q.id, resposta: prova.respostas[q.id] ?? null })),
       prova.modo,
       Math.round((Date.now() - prova.inicio) / 1000),
+      prova.provaId,
     );
     try {
       await salvarProva(resultado);
@@ -87,24 +102,66 @@ export default function Prova() {
   }
 
   if (!prova) {
+    // Lista da mais nova para a mais antiga: a 1ª tentativa é a última encontrada.
+    const primeiraObjetiva = (id: string) => feitas?.provas.filter((p) => p.provaId === id).at(-1);
+    const primeiraRedacao = (id: string) => feitas?.redacoes.filter((r) => r.provaId === id).at(-1);
     return (
       <>
-        <h1>Simulado — prova objetiva</h1>
+        <h1>Provas</h1>
         <p className="sub" style={{ marginBottom: 20 }}>
-          As questões são sorteadas a cada simulado, então você pode refazer e encontrar provas diferentes. Ao final, você vê a
-          nota de cada área e a correção comentada de todas as questões.
+          São 3 provas, cada uma com um eixo temático atual e o seu tema de redação. Todo mundo faz as mesmas questões, então o
+          ranking é justo. Cada prova tem 20 questões (5 por área) + 1 redação.
         </p>
+        <div className="enem-info">
+          <strong>Para o ranking, vale a 1ª tentativa</strong> de cada prova e de cada redação. Você pode refazer quantas vezes
+          quiser para estudar, mas a nota do ranking não muda.
+        </div>
         <div className="enem-grid">
-          <div className="enem-card">
-            <h3>⚡ Simulado rápido</h3>
-            <p className="sub">{QUESTOES_POR_AREA.rapido * 4} questões ({QUESTOES_POR_AREA.rapido} por área). Tempo sugerido: 1 hora.</p>
-            <button className="enem-btn" style={{ marginTop: 14 }} onClick={() => iniciar("rapido")}>Começar</button>
-          </div>
-          <div className="enem-card">
-            <h3>🎯 Simulado completo</h3>
-            <p className="sub">{QUESTOES_POR_AREA.completo * 4} questões ({QUESTOES_POR_AREA.completo} por área). Tempo sugerido: 2 horas.</p>
-            <button className="enem-btn" style={{ marginTop: 14 }} onClick={() => iniciar("completo")}>Começar</button>
-          </div>
+          {PROVAS.map((p) => {
+            const obj = primeiraObjetiva(p.id);
+            const red = primeiraRedacao(p.id);
+            return (
+              <div key={p.id} className="enem-card">
+                <span className="enem-tag">{p.eixo}</span>
+                <h3 style={{ marginTop: 8 }}>{p.nome}</h3>
+                <p className="sub" style={{ fontSize: 14, marginBottom: 12 }}>{p.descricao}</p>
+                <p style={{ fontSize: 14 }}>
+                  1. Objetiva:{" "}
+                  {obj ? (
+                    <Link to={`/enem/prova/resultado/${obj.id}`} className="enem-ok-txt">{obj.media.toFixed(1)} ✔</Link>
+                  ) : (
+                    <span className="sub">não feita</span>
+                  )}
+                </p>
+                <p style={{ fontSize: 14, marginBottom: 12 }}>
+                  2. Redação:{" "}
+                  {red ? (
+                    <Link to={`/enem/redacao/resultado/${red.id}`} className="enem-ok-txt">{red.correcao.notaTotal} ✔</Link>
+                  ) : (
+                    <span className="sub">não feita</span>
+                  )}
+                </p>
+                <div className="enem-linha" style={{ gap: 8 }}>
+                  <button className={`enem-btn ${obj ? "sec" : ""}`} style={{ padding: "9px 14px", fontSize: 14 }} onClick={() => iniciarOficial(p.id)}>
+                    {obj ? "Refazer objetiva" : "Fazer objetiva"}
+                  </button>
+                  <Link to={`/enem/redacao?prova=${p.id}`} className={`enem-btn ${red || !obj ? "sec" : ""}`} style={{ padding: "9px 14px", fontSize: 14 }}>
+                    {red ? "Reescrever redação" : "Fazer redação"}
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <h2>Treino livre</h2>
+        <p className="sub" style={{ marginBottom: 12 }}>
+          Questões sorteadas do banco inteiro ({BANCO.length} questões). Bom para revisar —
+          não conta para o ranking geral.
+        </p>
+        <div className="enem-linha">
+          <button className="enem-btn sec" onClick={() => iniciar("rapido")}>⚡ Rápido ({QUESTOES_POR_AREA.rapido * 4} questões)</button>
+          <button className="enem-btn sec" onClick={() => iniciar("completo")}>🎯 Completo ({QUESTOES_POR_AREA.completo * 4} questões)</button>
         </div>
         <div className="enem-info" style={{ marginTop: 20 }}>
           <strong>Como a nota é calculada?</strong> O ENEM usa a TRI (Teoria de Resposta ao Item). Aqui fazemos uma estimativa
@@ -130,6 +187,7 @@ export default function Prova() {
     <>
       <div className="enem-entre" style={{ marginBottom: 14 }}>
         <div>
+          {prova.provaId && <span className="enem-tag">{PROVAS.find((p) => p.id === prova.provaId)?.nome}</span>}{" "}
           <span className="enem-tag" style={{ background: `${area.cor}22`, color: area.cor }}>{area.curto}</span>{" "}
           <span className="sub" style={{ fontSize: 14 }}>
             Questão {prova.atual + 1} de {questoes.length} · {respondidas} respondida(s)

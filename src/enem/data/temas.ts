@@ -47,6 +47,11 @@ export const temasPropostos: TemaRedacao[] = [
         conteudo:
           "O Estatuto da Criança e do Adolescente (Lei nº 8.069/1990) estabelece que é dever da família, da comunidade, da sociedade e do poder público assegurar, com absoluta prioridade, os direitos de crianças e adolescentes, incluindo a saúde e o lazer.",
       },
+      {
+        titulo: "Texto IV",
+        conteudo:
+          "Em 2025, entrou em vigor a Lei nº 15.100, que restringe o uso de celulares e outros aparelhos eletrônicos portáteis pelos estudantes nas escolas públicas e privadas de educação básica, inclusive no recreio, salvo para fins pedagógicos ou de acessibilidade.",
+      },
     ],
   },
   {
@@ -161,6 +166,76 @@ export const temasPropostos: TemaRedacao[] = [
   },
 ];
 
+/** Temas das 3 provas oficiais do simulado — atuais (2024–2026), um eixo diferente em cada prova. */
+export const temasDasProvas: TemaRedacao[] = [
+  {
+    id: "R1",
+    titulo: "Desafios para o uso ético da inteligência artificial na sociedade brasileira",
+    palavrasChave: ["inteligência artificial", "ia", "tecnologia", "ética", "algoritmo", "dados", "deepfake", "regulação"],
+    textos: [
+      {
+        titulo: "Texto I",
+        conteudo:
+          "Ferramentas de inteligência artificial generativa produzem textos, imagens, vozes e vídeos em segundos. Elas já são usadas para estudar, trabalhar e criar — mas também para fabricar conteúdos falsos, como os deepfakes, proibidos pelo Tribunal Superior Eleitoral na propaganda eleitoral desde 2024.",
+      },
+      {
+        titulo: "Texto II",
+        conteudo:
+          "Sistemas de IA aprendem a partir de grandes volumes de dados. Quando esses dados refletem desigualdades da sociedade, os sistemas podem reproduzir preconceitos — por exemplo, em processos de seleção de emprego ou de reconhecimento facial.",
+      },
+      {
+        titulo: "Texto III",
+        conteudo:
+          "A Lei Geral de Proteção de Dados (Lei nº 13.709/2018) garante aos cidadãos direitos sobre suas informações pessoais. Tramita no Congresso Nacional o Projeto de Lei nº 2.338/2023, que propõe regras específicas para o desenvolvimento e o uso da inteligência artificial no país.",
+      },
+    ],
+  },
+  {
+    id: "R2",
+    titulo: "Caminhos para enfrentar os impactos dos eventos climáticos extremos no Brasil",
+    palavrasChave: ["clima", "climático", "climáticos", "enchente", "enchentes", "seca", "chuva", "aquecimento", "desastre", "eventos extremos"],
+    textos: [
+      {
+        titulo: "Texto I",
+        conteudo:
+          "Em maio de 2024, chuvas intensas causaram enchentes históricas no Rio Grande do Sul, atingindo centenas de municípios e deixando milhares de pessoas desalojadas. No mesmo ano, rios da Amazônia registraram secas severas, isolando comunidades ribeirinhas.",
+      },
+      {
+        titulo: "Texto II",
+        conteudo:
+          "Em novembro de 2025, Belém (PA) sediou a COP30, conferência da ONU sobre mudanças climáticas. Cientistas alertam que o aquecimento global torna eventos extremos — ondas de calor, secas e chuvas intensas — mais frequentes e mais fortes.",
+      },
+      {
+        titulo: "Texto III",
+        conteudo:
+          "A Política Nacional de Proteção e Defesa Civil (Lei nº 12.608/2012) prevê ações de prevenção, mitigação, preparação, resposta e recuperação de desastres, incluindo o mapeamento de áreas de risco.",
+      },
+    ],
+  },
+  {
+    id: "R3",
+    titulo: "Os impactos das apostas online na vida dos jovens brasileiros",
+    palavrasChave: ["aposta", "apostas", "bets", "jogo", "jogos", "vício", "endividamento", "jovens", "jovem"],
+    textos: [
+      {
+        titulo: "Texto I",
+        conteudo:
+          "A Lei nº 14.790/2023 regulamentou as apostas de quota fixa no Brasil, as chamadas 'bets', e proibiu a participação de menores de 18 anos. Mesmo assim, a publicidade dessas plataformas se espalhou por redes sociais, transmissões esportivas e perfis de influenciadores.",
+      },
+      {
+        titulo: "Texto II",
+        conteudo:
+          "A Organização Mundial da Saúde reconhece o transtorno do jogo como uma doença, caracterizada pela perda de controle sobre o hábito de jogar, mesmo diante de prejuízos financeiros, familiares e emocionais.",
+      },
+      {
+        titulo: "Texto III",
+        conteudo:
+          "Com o Pix, transferir dinheiro para uma plataforma de apostas leva poucos segundos. Especialistas em educação financeira alertam que a promessa de ganho rápido atrai principalmente jovens e famílias de baixa renda, que acabam se endividando.",
+      },
+    ],
+  },
+];
+
 /** Temas oficiais das redações do ENEM (provas regulares) de 2016 a 2025. Textos motivadores elaborados para treino. */
 export const temasAnteriores: TemaRedacao[] = [
   {
@@ -265,7 +340,7 @@ export const temasAnteriores: TemaRedacao[] = [
   },
 ];
 
-export const todosOsTemas: TemaRedacao[] = [...temasPropostos, ...temasAnteriores];
+export const todosOsTemas: TemaRedacao[] = [...temasDasProvas, ...temasPropostos, ...temasAnteriores];
 
 export function buscarTema(id: string): TemaRedacao | undefined {
   return todosOsTemas.find((t) => t.id === id);

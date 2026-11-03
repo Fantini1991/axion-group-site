@@ -45,7 +45,9 @@ export interface RespostaProva {
 export interface ResultadoProva {
   id: string;
   data: string;
-  modo: "rapido" | "completo";
+  modo: "oficial" | "rapido" | "completo";
+  /** Preenchido quando é uma das 3 provas oficiais (P1, P2, P3). */
+  provaId?: string;
   respostas: RespostaProva[];
   notas: Record<Area, number>;
   acertos: Record<Area, { acertos: number; total: number }>;
@@ -77,6 +79,8 @@ export interface ResultadoRedacao {
   data: string;
   temaId: string;
   temaTitulo: string;
+  /** Preenchido quando a redação faz parte de uma prova oficial. */
+  provaId?: string;
   texto: string;
   correcao: CorrecaoRedacao;
 }
@@ -94,5 +98,8 @@ export interface LinhaRanking {
   melhorMedia: number;
   melhorRedacao: number;
   melhoresAreas: Record<Area, number>;
+  /** Nota em cada prova oficial (1ª tentativa): (objetiva × 4 + redação) ÷ 5. */
+  porProva: Record<string, { objetiva: number | null; redacao: number | null; nota: number }>;
+  /** Média das 3 provas oficiais (prova não feita conta como zero). */
   notaGeral: number;
 }

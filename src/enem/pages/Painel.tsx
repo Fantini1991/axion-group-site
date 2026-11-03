@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { historico } from "../api";
 import { useEnem } from "../contexto";
+import { buscarProva } from "../data/provas";
 import { AREAS, type ResultadoProva, type ResultadoRedacao } from "../types";
 
 const dataBR = (iso: string) =>
@@ -28,18 +29,19 @@ export default function Painel() {
 
       <div className="enem-grid">
         <div className="enem-card">
-          <h3>📝 Prova objetiva</h3>
+          <h3>📝 Provas 1, 2 e 3</h3>
           <p className="sub" style={{ marginBottom: 14 }}>
-            Questões das 4 áreas, sorteadas de um banco montado com base nos conteúdos mais cobrados de 2016 a 2025.
+            3 provas com eixos atuais (tecnologia, clima, cidadania), cada uma com 20 questões e um tema de redação. São elas que
+            contam para o ranking.
           </p>
-          <Link to="/enem/prova" className="enem-btn">Fazer simulado</Link>
+          <Link to="/enem/prova" className="enem-btn">Ir para as provas</Link>
         </div>
         <div className="enem-card">
-          <h3>✍️ Redação</h3>
+          <h3>✍️ Treino de redação</h3>
           <p className="sub" style={{ marginBottom: 14 }}>
-            Tema no estilo ENEM, com textos motivadores e correção nas 5 competências.
+            Temas inéditos e os temas oficiais de 2016 a 2025, com correção nas 5 competências.
           </p>
-          <Link to="/enem/redacao" className="enem-btn">Escrever redação</Link>
+          <Link to="/enem/redacao" className="enem-btn sec">Treinar redação</Link>
         </div>
         <div className="enem-card">
           <h3>🏆 Ranking</h3>
@@ -48,18 +50,19 @@ export default function Painel() {
         </div>
       </div>
 
-      <h2>Seus simulados</h2>
+      <h2>Suas provas</h2>
       {erro && <div className="enem-erro">{erro}</div>}
       {!dados ? (
         <p className="sub">Carregando…</p>
       ) : dados.provas.length === 0 ? (
-        <p className="sub">Você ainda não fez nenhum simulado.</p>
+        <p className="sub">Você ainda não fez nenhuma prova.</p>
       ) : (
         <div className="enem-card enem-rolagem">
           <table className="enem-tabela">
             <thead>
               <tr>
                 <th>Data</th>
+                <th>Prova</th>
                 {AREAS.map((a) => <th key={a.id} className="num">{a.curto}</th>)}
                 <th className="num">Média</th>
                 <th></th>
@@ -69,6 +72,7 @@ export default function Painel() {
               {dados.provas.map((p) => (
                 <tr key={p.id}>
                   <td>{dataBR(p.data)}</td>
+                  <td>{buscarProva(p.provaId)?.nome ?? "Treino"}</td>
                   {AREAS.map((a) => <td key={a.id} className="num">{p.notas[a.id].toFixed(0)}</td>)}
                   <td className="num"><strong>{p.media.toFixed(1)}</strong></td>
                   <td><Link to={`/enem/prova/resultado/${p.id}`} style={{ color: "var(--e-primaria)", fontWeight: 600 }}>Ver correção</Link></td>
@@ -99,7 +103,7 @@ export default function Painel() {
               {dados.redacoes.map((r) => (
                 <tr key={r.id}>
                   <td>{dataBR(r.data)}</td>
-                  <td>{r.temaTitulo}</td>
+                  <td>{r.provaId ? `${buscarProva(r.provaId)?.nome}: ` : ""}{r.temaTitulo}</td>
                   <td className="num"><strong>{r.correcao.notaTotal}</strong></td>
                   <td><Link to={`/enem/redacao/resultado/${r.id}`} style={{ color: "var(--e-primaria)", fontWeight: 600 }}>Ver correção</Link></td>
                 </tr>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { historico } from "../api";
+import { buscarProva } from "../data/provas";
 import { buscarQuestao, LETRAS } from "../prova";
 import { AREAS, type Area, type ResultadoProva as Resultado } from "../types";
 
@@ -42,11 +43,19 @@ export default function ResultadoProva() {
 
   return (
     <>
-      <h1>Resultado do simulado</h1>
+      <h1>Resultado {buscarProva(resultado.provaId)?.nome ? `— ${buscarProva(resultado.provaId)!.nome}` : "do treino"}</h1>
       <p className="sub" style={{ marginBottom: 20 }}>
         {totalAcertos} acertos em {total} questões · tempo: {Math.round(resultado.duracaoSeg / 60)} min
       </p>
 
+      {resultado.provaId && (
+        <div className="enem-info enem-entre">
+          <span>Próximo passo: escreva a redação desta prova para completar sua nota no ranking.</span>
+          <Link to={`/enem/redacao?prova=${resultado.provaId}`} className="enem-btn" style={{ padding: "8px 14px", fontSize: 14 }}>
+            Fazer a redação →
+          </Link>
+        </div>
+      )}
       <div className="enem-grid" style={{ marginBottom: 20 }}>
         <div className="enem-card">
           <p className="sub" style={{ fontSize: 14 }}>Média das áreas</p>
@@ -142,7 +151,7 @@ export default function ResultadoProva() {
       })}
 
       <div className="enem-linha" style={{ marginTop: 20 }}>
-        <Link to="/enem/prova" className="enem-btn">Fazer outro simulado</Link>
+        <Link to="/enem/prova" className="enem-btn">Voltar às provas</Link>
         <Link to="/enem/ranking" className="enem-btn sec">Ver ranking</Link>
       </div>
     </>

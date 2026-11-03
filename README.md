@@ -38,11 +38,16 @@ See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rule
 Área separada do site, acessada em `https://<seu-domínio>/enem`.
 
 - **Cadastro simples** (nome, usuário e senha) e login.
-- **Prova objetiva** nas 4 áreas (rápida: 20 questões, completa: 40), sorteadas de um banco com 48 questões
-  inéditas montadas sobre os conteúdos que mais caíram no ENEM de 2016 a 2025 (`src/enem/data/`).
+- **3 provas oficiais** (`src/enem/data/provas.ts`), iguais para todos, cada uma com 20 questões (5 por área) e um tema de redação próprio:
+  1. Tecnologia e sociedade — redação sobre o uso ético da inteligência artificial;
+  2. Meio ambiente e clima — redação sobre eventos climáticos extremos;
+  3. Cidadania, saúde e economia — redação sobre apostas online e os jovens.
+- **Banco de 60 questões inéditas**, baseadas nos conteúdos que mais caíram no ENEM de 2016 a 2025 e atualizadas com contextos de 2024–2026
+  (IA, deepfakes, COP30, enchentes no RS, trabalho por aplicativo, apostas online, vacinas de mRNA, energia solar).
 - **Correção** com nota estimada (inspirada na TRI) por área, o comentário de cada alternativa (por que errou) e o passo a passo da resolução.
-- **Redação** com 7 temas inéditos e os 10 temas oficiais de 2016 a 2025, corrigida nas 5 competências.
-- **Ranking** por nota geral (média SISU: objetivas × 4 + redação ÷ 5), por área e por redação.
+- **Redação** corrigida nas 5 competências do ENEM. Há também treino livre com 7 temas inéditos e os 10 temas oficiais de 2016 a 2025.
+- **Ranking**: nota de cada prova = (objetiva × 4 + redação) ÷ 5; nota geral = média das 3 provas. Vale só a 1ª tentativa.
+- **Treino livre** com questões sorteadas do banco inteiro (não conta para o ranking).
 
 ### Configuração na Vercel
 

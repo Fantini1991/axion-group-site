@@ -80,13 +80,40 @@ async function usuarioDaRequisicao(req: VercelRequest): Promise<string | null> {
 }
 
 const AREAS = ["linguagens", "humanas", "natureza", "matematica"] as const;
+const IDS_PROVAS = ["P1", "P2", "P3"] as const;
+const MAX_REGISTROS = 200;
 
 interface ProvaResumo {
+  provaId?: string;
   media: number;
   notas: Record<(typeof AREAS)[number], number>;
 }
 interface RedacaoResumo {
+  provaId?: string;
   correcao: { notaTotal: number };
+}
+
+/** Mesma regra de src/enem/ranking.ts: nas provas oficiais vale só a 1ª tentativa. */
+function linhaDoRanking(username: string, nome: string, provas: ProvaResumo[], redacoes: RedacaoResumo[]) {
+  const primeira = <T extends { provaId?: string }>(lista: T[], id: string) =>
+    [...lista].reverse().find((x) => x.provaId === id);
+  const porProva: Record<string, { objetiva: number | null; redacao: number | null; nota: number }> = {};
+  for (const id of IDS_PROVAS) {
+    const objetiva = primeira(provas, id)?.media ?? null;
+    const redacao = primeira(redacoes, id)?.correcao?.notaTotal ?? null;
+    porProva[id] = { objetiva, redacao, nota: Math.round((((objetiva ?? 0) * 4 + (redacao ?? 0)) / 5) * 10) / 10 };
+  }
+  return {
+    username,
+    nome,
+    simulados: provas.length,
+    redacoes: redacoes.length,
+    melhorMedia: Math.max(0, ...provas.map((p) => p.media)),
+    melhorRedacao: Math.max(0, ...redacoes.map((r) => r.correcao?.notaTotal ?? 0)),
+    melhoresAreas: Object.fromEntries(AREAS.map((a) => [a, Math.max(0, ...provas.map((p) => p.notas?.[a] ?? 0))])),
+    porProva,
+    notaGeral: Math.round((IDS_PROVAS.reduce((s, id) => s + porProva[id].nota, 0) / IDS_PROVAS.length) * 10) / 10,
+  };
 }
 
 async function ranking() {
@@ -98,28 +125,14 @@ async function ranking() {
     ["LRANGE", `${P}redacoes:${u}`, 0, -1],
   ]);
   const res = await pipeline<unknown>(cmds);
-  const linhas = usernames.map((username, i) => {
-    const usuario = JSON.parse((res[i * 3] as string) || "{}") as Partial<UsuarioSalvo>;
-    const provas = ((res[i * 3 + 1] as string[]) || []).map((s) => JSON.parse(s) as ProvaResumo);
-    const redacoes = ((res[i * 3 + 2] as string[]) || []).map((s) => JSON.parse(s) as RedacaoResumo);
-    const melhorMedia = Math.max(0, ...provas.map((p) => p.media));
-    const melhorRedacao = Math.max(0, ...redacoes.map((r) => r.correcao?.notaTotal ?? 0));
-    const melhoresAreas = Object.fromEntries(
-      AREAS.map((a) => [a, Math.max(0, ...provas.map((p) => p.notas?.[a] ?? 0))]),
-    );
-    const notaGeral = Math.round(((melhorMedia * 4 + melhorRedacao) / 5) * 10) / 10;
-    return {
-      username,
-      nome: usuario.nome || username,
-      simulados: provas.length,
-      redacoes: redacoes.length,
-      melhorMedia,
-      melhorRedacao,
-      melhoresAreas,
-      notaGeral,
-    };
-  });
-  return linhas.sort((a, b) => b.notaGeral - a.notaGeral);
+  return usernames
+    .map((username, i) => {
+      const usuario = JSON.parse((res[i * 3] as string) || "{}") as Partial<UsuarioSalvo>;
+      const provas = ((res[i * 3 + 1] as string[]) || []).map((s) => JSON.parse(s) as ProvaResumo);
+      const redacoes = ((res[i * 3 + 2] as string[]) || []).map((s) => JSON.parse(s) as RedacaoResumo);
+      return linhaDoRanking(username, usuario.nome || username, provas, redacoes);
+    })
+    .sort((a, b) => b.notaGeral - a.notaGeral);
 }
 
 // ---------------- Correção de redação por IA ----------------
@@ -285,7 +298,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const chave = `${P}${action === "salvarProva" ? "provas" : "redacoes"}:${username}`;
       await pipeline([
         ["LPUSH", chave, json],
-        ["LTRIM", chave, 0, 49],
+        ["LTRIM", chave, 0, MAX_REGISTROS - 1],
       ]);
       return res.status(200).json({ ok: true });
     }

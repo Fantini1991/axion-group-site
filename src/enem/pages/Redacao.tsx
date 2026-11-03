@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { corrigirComIA, salvarRedacao } from "../api";
 import { useEnem } from "../contexto";
 import { corrigirLocalmente } from "../corretorLocal";
+import { buscarProva } from "../data/provas";
 import { buscarTema, temasAnteriores, temasPropostos } from "../data/temas";
 import type { CorrecaoRedacao, ResultadoRedacao } from "../types";
 
 const CARACTERES_POR_LINHA = 75;
 
+/** Remonta a página ao trocar entre treino livre e a redação de uma prova. */
 export default function Redacao() {
+  const [params] = useSearchParams();
+  return <RedacaoPagina key={params.get("prova") ?? "livre"} />;
+}
+
+function RedacaoPagina() {
   const { usuario, status } = useEnem();
   const navigate = useNavigate();
-  const chaveRascunho = `enem:rascunho-redacao:${usuario?.username}`;
+  const [params] = useSearchParams();
+  const provaOficial = buscarProva(params.get("prova") ?? undefined);
+  const chaveRascunho = `enem:rascunho-redacao:${usuario?.username}${provaOficial ? `:${provaOficial.id}` : ""}`;
 
   const [lista, setLista] = useState<"propostos" | "anteriores">("propostos");
   const [temaId, setTemaId] = useState<string | null>(() => {
+    if (provaOficial) return provaOficial.temaRedacaoId;
     try {
       return (JSON.parse(localStorage.getItem(chaveRascunho) || "null") as { temaId: string } | null)?.temaId ?? null;
     } catch {
@@ -74,6 +84,7 @@ export default function Redacao() {
       data: new Date().toISOString(),
       temaId: tema.id,
       temaTitulo: tema.titulo,
+      ...(provaOficial ? { provaId: provaOficial.id } : {}),
       texto,
       correcao,
     };
@@ -96,7 +107,11 @@ export default function Redacao() {
     const temas = lista === "propostos" ? temasPropostos : temasAnteriores;
     return (
       <>
-        <h1>Redação</h1>
+        <h1>Redação — treino livre</h1>
+        <div className="enem-info">
+          As redações que contam para o ranking ficam dentro de cada prova, na página <strong>Provas</strong>. Aqui você treina
+          com qualquer tema.
+        </div>
         <p className="sub" style={{ marginBottom: 18 }}>
           Escolha um tema. Os <strong>temas inéditos</strong> foram criados no estilo do ENEM, a partir dos assuntos que mais
           apareceram de 2016 a 2025. Você também pode treinar com os <strong>temas oficiais</strong> das últimas 10 edições.
@@ -126,8 +141,10 @@ export default function Redacao() {
   return (
     <>
       <div className="enem-entre" style={{ marginBottom: 10 }}>
-        <span className="enem-tag">{tema.ano ? `Tema do ENEM ${tema.ano}` : "Tema inédito"}</span>
-        <button
+        <span className="enem-tag">
+          {provaOficial ? `Redação da ${provaOficial.nome} — ${provaOficial.eixo}` : tema.ano ? `Tema do ENEM ${tema.ano}` : "Tema inédito"}
+        </span>
+        {!provaOficial && <button
           className="enem-btn sec"
           style={{ padding: "6px 12px", fontSize: 14 }}
           onClick={() => {
@@ -142,7 +159,7 @@ export default function Redacao() {
           }}
         >
           Trocar tema
-        </button>
+        </button>}
       </div>
 
       <div className="enem-card" style={{ marginBottom: 16 }}>

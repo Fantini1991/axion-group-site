@@ -3,8 +3,10 @@ import { linguagens } from "./data/linguagens";
 import { humanas } from "./data/humanas";
 import { natureza } from "./data/natureza";
 import { matematica } from "./data/matematica";
+import { atuais } from "./data/atuais";
+import { buscarProva } from "./data/provas";
 
-export const BANCO: Questao[] = [...linguagens, ...humanas, ...natureza, ...matematica];
+export const BANCO: Questao[] = [...linguagens, ...humanas, ...natureza, ...matematica, ...atuais];
 
 const porId = new Map(BANCO.map((q) => [q.id, q]));
 export const buscarQuestao = (id: string) => porId.get(id);
@@ -18,6 +20,14 @@ function embaralhar<T>(lista: T[]): T[] {
     [copia[i], copia[j]] = [copia[j], copia[i]];
   }
   return copia;
+}
+
+/** Questões de uma prova oficial: ordem fixa, igual para todos. */
+export function questoesDaProva(provaId: string): Questao[] {
+  const prova = buscarProva(provaId);
+  if (!prova) return [];
+  const qs = prova.questoes.map((id) => porId.get(id)).filter((q): q is Questao => Boolean(q));
+  return AREAS.flatMap(({ id }) => qs.filter((q) => q.area === id).sort((a, b) => a.dificuldade - b.dificuldade));
 }
 
 /** Sorteia questões de cada área, mantendo a ordem das áreas como no ENEM. */
@@ -63,8 +73,9 @@ export function notaDaArea(questoes: Questao[], respostas: Map<string, number | 
 export function corrigirProva(
   questoes: Questao[],
   respostas: RespostaProva[],
-  modo: "rapido" | "completo",
+  modo: ResultadoProva["modo"],
   duracaoSeg: number,
+  provaId?: string,
 ): ResultadoProva {
   const mapa = new Map(respostas.map((r) => [r.questaoId, r.resposta]));
   const notas = {} as Record<Area, number>;
@@ -79,6 +90,7 @@ export function corrigirProva(
     id: crypto.randomUUID(),
     data: new Date().toISOString(),
     modo,
+    ...(provaId ? { provaId } : {}),
     respostas: questoes.map((q) => ({ questaoId: q.id, resposta: mapa.get(q.id) ?? null })),
     notas,
     acertos,
