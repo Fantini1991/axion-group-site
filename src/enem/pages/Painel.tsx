@@ -44,6 +44,11 @@ export default function Painel() {
           <Link to="/enem/redacao" className="enem-btn sec">Treinar redação</Link>
         </div>
         <div className="enem-card">
+          <h3>📚 ENEM anteriores</h3>
+          <p className="sub" style={{ marginBottom: 14 }}>Provas e temas de redação de 2022 a 2025, para consultar e treinar.</p>
+          <Link to="/enem/anteriores" className="enem-btn sec">Ver edições</Link>
+        </div>
+        <div className="enem-card">
           <h3>🏆 Ranking</h3>
           <p className="sub" style={{ marginBottom: 14 }}>Veja quem tirou as melhores notas entre você e seus amigos.</p>
           <Link to="/enem/ranking" className="enem-btn sec">Ver ranking</Link>

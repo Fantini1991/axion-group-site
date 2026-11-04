@@ -12,7 +12,7 @@ const CARACTERES_POR_LINHA = 75;
 /** Remonta a página ao trocar entre treino livre e a redação de uma prova. */
 export default function Redacao() {
   const [params] = useSearchParams();
-  return <RedacaoPagina key={params.get("prova") ?? "livre"} />;
+  return <RedacaoPagina key={params.get("prova") ?? params.get("tema") ?? "livre"} />;
 }
 
 function RedacaoPagina() {
@@ -20,11 +20,14 @@ function RedacaoPagina() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const provaOficial = buscarProva(params.get("prova") ?? undefined);
-  const chaveRascunho = `enem:rascunho-redacao:${usuario?.username}${provaOficial ? `:${provaOficial.id}` : ""}`;
+  const chaveRascunho = `enem:rascunho-redacao:${usuario?.username}${provaOficial ? `:${provaOficial.id}` : params.get("tema") ? `:${params.get("tema")}` : ""}`;
 
   const [lista, setLista] = useState<"propostos" | "anteriores">("propostos");
   const [temaId, setTemaId] = useState<string | null>(() => {
     if (provaOficial) return provaOficial.temaRedacaoId;
+    // Vindo de "ENEM anteriores": abre direto no tema escolhido.
+    const temaUrl = params.get("tema");
+    if (temaUrl && buscarTema(temaUrl)) return temaUrl;
     try {
       return (JSON.parse(localStorage.getItem(chaveRascunho) || "null") as { temaId: string } | null)?.temaId ?? null;
     } catch {

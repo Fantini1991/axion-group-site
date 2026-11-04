@@ -11,6 +11,7 @@ import ResultadoProva from "./pages/ResultadoProva";
 import Redacao from "./pages/Redacao";
 import CorrecaoRedacao from "./pages/CorrecaoRedacao";
 import Ranking from "./pages/Ranking";
+import Anteriores from "./pages/Anteriores";
 
 function Topo() {
   const { usuario, definirUsuario } = useEnem();
@@ -26,6 +27,7 @@ function Topo() {
             <NavLink to="/enem" end className={({ isActive }) => (isActive ? "ativo" : "")}>Início</NavLink>
             <NavLink to="/enem/prova" className={({ isActive }) => (isActive ? "ativo" : "")}>Provas</NavLink>
             <NavLink to="/enem/redacao" className={({ isActive }) => (isActive ? "ativo" : "")}>Treino de redação</NavLink>
+            <NavLink to="/enem/anteriores" className={({ isActive }) => (isActive ? "ativo" : "")}>ENEM anteriores</NavLink>
             <NavLink to="/enem/ranking" className={({ isActive }) => (isActive ? "ativo" : "")}>Ranking</NavLink>
             <button
               onClick={async () => {
@@ -81,6 +83,7 @@ export default function EnemApp() {
               <Route path="prova/resultado/:id" element={<Protegida><ResultadoProva /></Protegida>} />
               <Route path="redacao" element={<Protegida><Redacao /></Protegida>} />
               <Route path="redacao/resultado/:id" element={<Protegida><CorrecaoRedacao /></Protegida>} />
+              <Route path="anteriores" element={<Protegida><Anteriores /></Protegida>} />
               <Route path="ranking" element={<Protegida><Ranking /></Protegida>} />
               <Route path="*" element={<Navigate to="/enem" replace />} />
             </Routes>
