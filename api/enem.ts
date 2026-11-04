@@ -56,6 +56,24 @@ interface UsuarioSalvo {
   criadoEm: string;
 }
 
+/** Mesma regra de src/enem/api.ts: sem acentos, sem espaços, minúsculo. */
+function normalizarUsuario(texto: string): string {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, ".")
+    .replace(/[^a-z0-9_.]/g, "")
+    .replace(/\.{2,}/g, ".")
+    .replace(/^\./, "")
+    .slice(0, 20);
+}
+
+/** Versão final, usada ao enviar: também tira o ponto do fim ("joao." → "joao"). */
+function usuarioFinal(texto: string): string {
+  return normalizarUsuario(texto).replace(/\.+$/, "");
+}
+
 function hashSenha(senha: string, salt: string) {
   return scryptSync(senha, salt, 32).toString("hex");
 }
@@ -239,14 +257,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     if (action === "cadastrar") {
       const nome = String(body.nome || "").trim().slice(0, 40);
-      const username = String(body.username || "").trim().toLowerCase();
+      const username = usuarioFinal(String(body.username || ""));
       const senha = String(body.senha || "");
       if (CONVITE && String(body.convite || "").trim() !== CONVITE) {
         return res.status(403).json({ error: "Código de convite inválido. Peça o código para quem criou o simulado." });
       }
       if (nome.length < 2) return res.status(400).json({ error: "Informe seu nome." });
       if (!/^[a-z0-9_.]{3,20}$/.test(username)) {
-        return res.status(400).json({ error: "O usuário deve ter de 3 a 20 caracteres: letras minúsculas, números, ponto ou _." });
+        return res.status(400).json({ error: "Escolha um usuário com pelo menos 3 letras ou números." });
       }
       if (senha.length < 4) return res.status(400).json({ error: "A senha deve ter pelo menos 4 caracteres." });
 
@@ -260,7 +278,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     if (action === "entrar") {
-      const username = String(body.username || "").trim().toLowerCase();
+      const username = usuarioFinal(String(body.username || ""));
       const senha = String(body.senha || "");
       const bruto = await redis<string | null>("GET", `${P}usuario:${username}`);
       const usuario = bruto ? (JSON.parse(bruto) as UsuarioSalvo) : null;

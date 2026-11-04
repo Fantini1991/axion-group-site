@@ -99,16 +99,34 @@ const usuariosLocais = () => ler<Record<string, UsuarioLocal>>(`${L}usuarios`, {
 
 // ---------- API pública ----------
 
+/** Deixa o usuário no formato aceito: sem acentos, sem espaços, minúsculo (ex.: "João Pedro" → "joao.pedro"). */
+export function normalizarUsuario(texto: string): string {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, ".")
+    .replace(/[^a-z0-9_.]/g, "")
+    .replace(/\.{2,}/g, ".")
+    .replace(/^\./, "")
+    .slice(0, 20);
+}
+
+/** Versão final, usada ao enviar: também tira o ponto do fim ("joao." → "joao"). */
+function usuarioFinal(texto: string): string {
+  return normalizarUsuario(texto).replace(/\.+$/, "");
+}
+
 function validar(nome: string, username: string, senha: string) {
   if (nome.trim().length < 2) throw new ErroApi("Informe seu nome.", 400);
   if (!/^[a-z0-9_.]{3,20}$/.test(username)) {
-    throw new ErroApi("O usuário deve ter de 3 a 20 caracteres: letras minúsculas, números, ponto ou _.", 400);
+    throw new ErroApi("Escolha um usuário com pelo menos 3 letras ou números.", 400);
   }
   if (senha.length < 4) throw new ErroApi("A senha deve ter pelo menos 4 caracteres.", 400);
 }
 
 export async function cadastrar(nome: string, username: string, senha: string, convite: string): Promise<Usuario> {
-  username = username.trim().toLowerCase();
+  username = usuarioFinal(username);
   validar(nome, username, senha);
   const { modo } = await obterStatus();
   let sessao: Sessao;
@@ -127,7 +145,7 @@ export async function cadastrar(nome: string, username: string, senha: string, c
 }
 
 export async function entrar(username: string, senha: string): Promise<Usuario> {
-  username = username.trim().toLowerCase();
+  username = usuarioFinal(username);
   const { modo } = await obterStatus();
   let sessao: Sessao;
   if (modo === "online") {

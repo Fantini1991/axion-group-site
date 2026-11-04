@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { cadastrar, entrar } from "../api";
+import { cadastrar, entrar, normalizarUsuario } from "../api";
 import { useEnem } from "../contexto";
 
 export default function Acesso() {
@@ -7,6 +7,7 @@ export default function Acesso() {
   const [aba, setAba] = useState<"entrar" | "cadastrar">("entrar");
   const [nome, setNome] = useState("");
   const [username, setUsername] = useState("");
+  const [usuarioEditado, setUsuarioEditado] = useState(false);
   const [senha, setSenha] = useState("");
   const [convite, setConvite] = useState("");
   const [erro, setErro] = useState("");
@@ -59,7 +60,11 @@ export default function Acesso() {
           {aba === "cadastrar" && (
             <div className="enem-campo">
               <label htmlFor="nome">Seu nome</label>
-              <input id="nome" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Ex.: João Pedro" maxLength={40} required />
+              <input id="nome" value={nome} onChange={(e) => {
+                  setNome(e.target.value);
+                  // Sugere o usuário a partir do nome, até a pessoa editar o campo.
+                  if (!usuarioEditado) setUsername(normalizarUsuario(e.target.value));
+                }} placeholder="Ex.: João Pedro" maxLength={40} required />
             </div>
           )}
           <div className="enem-campo">
@@ -67,13 +72,16 @@ export default function Acesso() {
             <input
               id="usuario"
               value={username}
-              onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s/g, ""))}
+              onChange={(e) => {
+                setUsuarioEditado(true);
+                setUsername(normalizarUsuario(e.target.value));
+              }}
               placeholder="ex.: joao.pedro"
               autoCapitalize="none"
               autoComplete="username"
               required
             />
-            {aba === "cadastrar" && <small>Letras minúsculas, números, ponto ou _ (3 a 20 caracteres).</small>}
+            {aba === "cadastrar" && <small>É com ele que você entra depois. Acentos e espaços são ajustados sozinhos.</small>}
           </div>
           <div className="enem-campo">
             <label htmlFor="senha">Senha</label>
