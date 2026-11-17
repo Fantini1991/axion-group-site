@@ -1,4 +1,5 @@
 import { linhaDoRanking } from "./ranking";
+import { linhaRankingConcurso, type LinhaRankingConcurso, type ResultadoConcurso } from "./concursos/logica";
 import { type CorrecaoRedacao, type LinhaRanking, type ResultadoProva, type ResultadoRedacao, type Usuario } from "./types";
 
 /**
@@ -231,4 +232,39 @@ export async function ranking(): Promise<LinhaRanking[]> {
 export async function corrigirComIA(tema: string, textosMotivadores: string, texto: string): Promise<CorrecaoRedacao> {
   const { correcao } = await chamar<{ correcao: CorrecaoRedacao }>("corrigirRedacao", { tema, textosMotivadores, texto });
   return correcao;
+}
+
+// ---------- Concursos (PF e Receita) ----------
+
+export async function salvarConcurso(resultado: ResultadoConcurso) {
+  const { modo } = await obterStatus();
+  if (modo === "online") {
+    await chamar("salvarConcurso", { resultado });
+    return;
+  }
+  const chave = `${L}concursos:${usuarioLogado().username}`;
+  gravar(chave, [resultado, ...ler<unknown[]>(chave, [])].slice(0, 200));
+}
+
+export async function historicoConcurso(): Promise<ResultadoConcurso[]> {
+  const { modo } = await obterStatus();
+  if (modo === "online") return (await chamar<{ lista: ResultadoConcurso[] }>("historicoConcurso")).lista;
+  return ler(`${L}concursos:${usuarioLogado().username}`, []);
+}
+
+export async function rankingConcurso(): Promise<LinhaRankingConcurso[]> {
+  const { modo } = await obterStatus();
+  let base: { username: string; nome: string; lista: ResultadoConcurso[] }[];
+  if (modo === "online") {
+    base = (await chamar<{ linhas: typeof base }>("rankingConcurso")).linhas;
+  } else {
+    base = Object.entries(usuariosLocais()).map(([username, u]) => ({
+      username,
+      nome: u.nome,
+      lista: ler<ResultadoConcurso[]>(`${L}concursos:${username}`, []),
+    }));
+  }
+  return base
+    .map((b) => linhaRankingConcurso(b.username, b.nome, b.lista))
+    .filter((l) => l.pfObjetiva !== null || l.pfDiscursiva !== null || l.rfbObjetiva !== null || l.rfbDiscursiva !== null);
 }

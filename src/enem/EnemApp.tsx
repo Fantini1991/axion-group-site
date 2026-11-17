@@ -12,6 +12,11 @@ import Redacao from "./pages/Redacao";
 import CorrecaoRedacao from "./pages/CorrecaoRedacao";
 import Ranking from "./pages/Ranking";
 import Anteriores from "./pages/Anteriores";
+import HubConcursos from "./pages/concursos/Hub";
+import ProvaConcurso from "./pages/concursos/ProvaConcurso";
+import DiscursivaConcurso from "./pages/concursos/DiscursivaConcurso";
+import ResultadoConcurso from "./pages/concursos/ResultadoConcurso";
+import RankingConcurso from "./pages/concursos/RankingConcurso";
 
 function Topo() {
   const { usuario, definirUsuario } = useEnem();
@@ -28,6 +33,7 @@ function Topo() {
             <NavLink to="/enem/prova" className={({ isActive }) => (isActive ? "ativo" : "")}>Provas</NavLink>
             <NavLink to="/enem/redacao" className={({ isActive }) => (isActive ? "ativo" : "")}>Treino de redação</NavLink>
             <NavLink to="/enem/anteriores" className={({ isActive }) => (isActive ? "ativo" : "")}>ENEM anteriores</NavLink>
+            <NavLink to="/enem/concursos" className={({ isActive }) => (isActive ? "ativo" : "")}>Concursos</NavLink>
             <NavLink to="/enem/ranking" className={({ isActive }) => (isActive ? "ativo" : "")}>Ranking</NavLink>
             <button
               onClick={async () => {
@@ -84,6 +90,11 @@ export default function EnemApp() {
               <Route path="redacao" element={<Protegida><Redacao /></Protegida>} />
               <Route path="redacao/resultado/:id" element={<Protegida><CorrecaoRedacao /></Protegida>} />
               <Route path="anteriores" element={<Protegida><Anteriores /></Protegida>} />
+              <Route path="concursos" element={<Protegida><HubConcursos /></Protegida>} />
+              <Route path="concursos/prova/:trilha" element={<Protegida><ProvaConcurso /></Protegida>} />
+              <Route path="concursos/discursiva/:trilha" element={<Protegida><DiscursivaConcurso /></Protegida>} />
+              <Route path="concursos/resultado/:id" element={<Protegida><ResultadoConcurso /></Protegida>} />
+              <Route path="concursos/ranking" element={<Protegida><RankingConcurso /></Protegida>} />
               <Route path="ranking" element={<Protegida><Ranking /></Protegida>} />
               <Route path="*" element={<Navigate to="/enem" replace />} />
             </Routes>

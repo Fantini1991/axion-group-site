@@ -19,7 +19,7 @@ interface Desvio {
   explicacao: string;
 }
 
-const DESVIOS: Desvio[] = [
+export const DESVIOS: Desvio[] = [
   { regex: /\ba gente\b/gi, correcao: "nós / a sociedade", explicacao: "'A gente' é coloquial. Na redação, prefira a 3ª pessoa ou 'nós'." },
   { regex: /\bpra\b/gi, correcao: "para", explicacao: "'Pra' é uma forma da oralidade; use 'para'." },
   { regex: /(?<!\p{L})(tá|tô|né|vc|vcs|pq|tb|tbm|blz)(?!\p{L})/giu, correcao: "forma por extenso", explicacao: "Abreviações e marcas de oralidade não são aceitas na norma-padrão escrita." },

@@ -49,6 +49,11 @@ export default function Painel() {
           <Link to="/enem/anteriores" className="enem-btn sec">Ver edições</Link>
         </div>
         <div className="enem-card">
+          <h3>🏛️ Concursos federais</h3>
+          <p className="sub" style={{ marginBottom: 14 }}>Polícia Federal (certo/errado) e Receita Federal (A–E), com discursiva.</p>
+          <Link to="/enem/concursos" className="enem-btn sec">Estudar para concursos</Link>
+        </div>
+        <div className="enem-card">
           <h3>🏆 Ranking</h3>
           <p className="sub" style={{ marginBottom: 14 }}>Veja quem tirou as melhores notas entre você e seus amigos.</p>
           <Link to="/enem/ranking" className="enem-btn sec">Ver ranking</Link>

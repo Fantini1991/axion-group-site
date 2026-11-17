@@ -289,6 +289,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(200).json({ token, usuario: { username, nome: usuario.nome } });
     }
 
+    if (action === "rankingConcurso") {
+      const usernames = await redis<string[]>("SMEMBERS", `${P}usuarios`);
+      const res2 = await pipeline<unknown>(
+        usernames.flatMap((u) => [
+          ["GET", `${P}usuario:${u}`],
+          ["LRANGE", `${P}concursos:${u}`, 0, -1],
+        ]),
+      );
+      const linhas = usernames.map((u, i) => {
+        const usuario = JSON.parse((res2[i * 2] as string) || "{}") as Partial<UsuarioSalvo>;
+        // Só o necessário para o ranking (sem o texto das discursivas).
+        const lista = ((res2[i * 2 + 1] as string[]) || []).map((s) => {
+          const r = JSON.parse(s) as { trilha: string; tipo: string; nota: number };
+          return { trilha: r.trilha, tipo: r.tipo, nota: r.nota };
+        });
+        return { username: u, nome: usuario.nome || u, lista };
+      });
+      return res.status(200).json({ linhas });
+    }
+
     if (action === "ranking") {
       return res.status(200).json({ linhas: await ranking() });
     }
@@ -319,6 +339,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         ["LTRIM", chave, 0, MAX_REGISTROS - 1],
       ]);
       return res.status(200).json({ ok: true });
+    }
+
+    if (action === "salvarConcurso") {
+      const json = JSON.stringify(body.resultado ?? null);
+      if (!body.resultado || json.length > 60_000) return res.status(400).json({ error: "Resultado inválido." });
+      const chave = `${P}concursos:${username}`;
+      await pipeline([
+        ["LPUSH", chave, json],
+        ["LTRIM", chave, 0, MAX_REGISTROS - 1],
+      ]);
+      return res.status(200).json({ ok: true });
+    }
+
+    if (action === "historicoConcurso") {
+      const lista = await redis<string[]>("LRANGE", `${P}concursos:${username}`, 0, -1);
+      return res.status(200).json({ lista: (lista || []).map((s) => JSON.parse(s)) });
     }
 
     if (action === "historico") {
