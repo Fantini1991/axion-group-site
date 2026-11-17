@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { historicoConcurso } from "../../api";
 import { DISCURSIVAS, ITENS_PF, QUESTOES_RFB, TRILHAS, type Trilha } from "../../concursos/dados";
 import type { ResultadoConcurso } from "../../concursos/logica";
+import { buscarProvaOficial } from "../../concursos/provasOficiais";
 
 const dataBR = (iso: string) => new Date(iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
 
@@ -21,8 +22,8 @@ export default function HubConcursos() {
     <>
       <h1>Concursos federais</h1>
       <p className="sub" style={{ marginBottom: 16 }}>
-        Treino para Polícia Federal e Receita Federal, com questões inéditas no formato das bancas, gabarito comentado com o
-        fundamento legal e discursiva corrigida.
+        Treino para Polícia Federal e Receita Federal: provas oficiais anteriores com correção pelo gabarito oficial e simulados
+        inéditos montados a partir delas, com gabarito comentado e discursiva corrigida.
       </p>
 
       <div className="enem-grid">
@@ -37,20 +38,29 @@ export default function HubConcursos() {
               <h3 style={{ marginTop: 8 }}>{info.nome}</h3>
               <p className="sub" style={{ fontSize: 14, marginBottom: 10 }}>{info.formato}</p>
               <p style={{ fontSize: 14 }}>
-                Objetiva ({total} {t === "PF" ? "itens" : "questões"}):{" "}
+                Simulado inédito ({total} {t === "PF" ? "itens" : "questões"}):{" "}
                 {obj === null ? <span className="sub">não feita</span> : <strong>{t === "PF" ? `${obj} pontos líquidos` : `${obj} acertos`}</strong>}
               </p>
               <p style={{ fontSize: 14, marginBottom: 12 }}>
                 Discursiva: {disc === null ? <span className="sub">não feita</span> : <strong>{disc.toFixed(2)} / 10</strong>}
               </p>
               <div className="enem-linha" style={{ gap: 8 }}>
-                <Link to={`/enem/concursos/prova/${t}`} className="enem-btn" style={{ padding: "9px 14px", fontSize: 14 }}>Prova objetiva</Link>
+                <Link to={`/enem/concursos/prova/${t}`} className="enem-btn" style={{ padding: "9px 14px", fontSize: 14 }}>Simulado inédito</Link>
                 <Link to={`/enem/concursos/discursiva/${t}`} className="enem-btn sec" style={{ padding: "9px 14px", fontSize: 14 }}>Discursiva</Link>
               </div>
               <p className="sub" style={{ fontSize: 13, marginTop: 10 }}>Tema da discursiva: {DISCURSIVAS[t].tema}</p>
             </div>
           );
         })}
+      </div>
+
+      <div className="enem-card" style={{ marginTop: 16 }}>
+        <h3>📚 Provas oficiais anteriores</h3>
+        <p className="sub" style={{ fontSize: 14, marginBottom: 10 }}>
+          PF 2021 e 2025 (Cebraspe) e Receita 2023 (FGV): caderno e gabarito oficiais, cartão-resposta corrigido com o gabarito
+          definitivo e o Raio-X das matérias que mais caem. Os simulados inéditos acima foram montados com base nelas.
+        </p>
+        <Link to="/enem/concursos/oficiais" className="enem-btn">Ver provas oficiais e Raio-X</Link>
       </div>
 
       <div className="enem-linha" style={{ marginTop: 16 }}>
@@ -73,7 +83,7 @@ export default function HubConcursos() {
                 <tr key={r.id}>
                   <td>{dataBR(r.data)}</td>
                   <td>{TRILHAS[r.trilha].nome}</td>
-                  <td>{r.tipo === "objetiva" ? "Objetiva" : "Discursiva"}</td>
+                  <td>{r.tipo === "objetiva" ? "Simulado inédito" : r.tipo === "discursiva" ? "Discursiva" : `Prova oficial ${buscarProvaOficial(r.provaId)?.ano ?? ""} — ${buscarProvaOficial(r.provaId)?.cargo ?? ""}`}</td>
                   <td className="num">
                     <strong>{r.tipo === "discursiva" ? `${r.nota.toFixed(2)} / 10` : r.trilha === "PF" ? `${r.nota} líq.` : `${r.nota}/${r.total}`}</strong>
                   </td>

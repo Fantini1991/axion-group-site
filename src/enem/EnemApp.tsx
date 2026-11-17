@@ -17,6 +17,8 @@ import ProvaConcurso from "./pages/concursos/ProvaConcurso";
 import DiscursivaConcurso from "./pages/concursos/DiscursivaConcurso";
 import ResultadoConcurso from "./pages/concursos/ResultadoConcurso";
 import RankingConcurso from "./pages/concursos/RankingConcurso";
+import ProvasOficiais from "./pages/concursos/ProvasOficiais";
+import CartaoResposta from "./pages/concursos/CartaoResposta";
 
 function Topo() {
   const { usuario, definirUsuario } = useEnem();
@@ -94,6 +96,8 @@ export default function EnemApp() {
               <Route path="concursos/prova/:trilha" element={<Protegida><ProvaConcurso /></Protegida>} />
               <Route path="concursos/discursiva/:trilha" element={<Protegida><DiscursivaConcurso /></Protegida>} />
               <Route path="concursos/resultado/:id" element={<Protegida><ResultadoConcurso /></Protegida>} />
+              <Route path="concursos/oficiais" element={<Protegida><ProvasOficiais /></Protegida>} />
+              <Route path="concursos/oficial/:id" element={<Protegida><CartaoResposta /></Protegida>} />
               <Route path="concursos/ranking" element={<Protegida><RankingConcurso /></Protegida>} />
               <Route path="ranking" element={<Protegida><Ranking /></Protegida>} />
               <Route path="*" element={<Navigate to="/enem" replace />} />

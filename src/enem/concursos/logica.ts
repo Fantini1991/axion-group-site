@@ -1,5 +1,6 @@
 import { DESVIOS } from "../corretorLocal";
 import { DISCURSIVAS, ITENS_PF, QUESTOES_RFB, type Trilha } from "./dados";
+import type { ProvaOficial } from "./provasOficiais";
 
 export interface ResultadoObjetivaConcurso {
   id: string;
@@ -43,7 +44,7 @@ export interface ResultadoDiscursiva {
   observacoes: string[];
 }
 
-export type ResultadoConcurso = ResultadoObjetivaConcurso | ResultadoDiscursiva;
+export type ResultadoConcurso = ResultadoObjetivaConcurso | ResultadoDiscursiva | ResultadoOficial;
 
 export function corrigirObjetiva(
   trilha: Trilha,
@@ -168,5 +169,68 @@ export function linhaRankingConcurso(username: string, nome: string, lista: Resu
     pfDiscursiva: melhor("PF", "discursiva"),
     rfbObjetiva: melhor("RFB", "objetiva"),
     rfbDiscursiva: melhor("RFB", "discursiva"),
+  };
+}
+
+// ======================= Provas oficiais (cartão-resposta) =======================
+
+export interface DesempenhoMateria {
+  nome: string;
+  acertos: number;
+  erros: number;
+  brancos: number;
+  anulados: number;
+  total: number;
+}
+
+export interface ResultadoOficial {
+  id: string;
+  tipo: "oficial";
+  trilha: Trilha;
+  provaId: string;
+  data: string;
+  /** Número do item → resposta marcada ("C"/"E" ou "A"–"E"). */
+  respostas: Record<number, string>;
+  acertos: number;
+  erros: number;
+  brancos: number;
+  anulados: number;
+  total: number;
+  /** Cebraspe: acertos − erros. FGV: acertos. Itens anulados não contam. */
+  nota: number;
+  porMateria: DesempenhoMateria[];
+}
+
+export function corrigirOficial(prova: ProvaOficial, respostas: Record<number, string>): ResultadoOficial {
+  const anulado = (g: string) => g === "X" || g === "*";
+  const porMateria: DesempenhoMateria[] = prova.materias.map((m) => {
+    const d: DesempenhoMateria = { nome: m.nome, acertos: 0, erros: 0, brancos: 0, anulados: 0, total: m.ate - m.de + 1 };
+    for (let n = m.de; n <= m.ate; n++) {
+      const g = prova.gabarito[n - 1];
+      const r = respostas[n];
+      if (anulado(g)) d.anulados++;
+      else if (!r) d.brancos++;
+      else if (r === g) d.acertos++;
+      else d.erros++;
+    }
+    return d;
+  });
+  const soma = (k: keyof Omit<DesempenhoMateria, "nome">) => porMateria.reduce((s, m) => s + m[k], 0);
+  const acertos = soma("acertos");
+  const erros = soma("erros");
+  return {
+    id: crypto.randomUUID(),
+    tipo: "oficial",
+    trilha: prova.trilha,
+    provaId: prova.id,
+    data: new Date().toISOString(),
+    respostas,
+    acertos,
+    erros,
+    brancos: soma("brancos"),
+    anulados: soma("anulados"),
+    total: prova.gabarito.length,
+    nota: prova.formato === "CE" ? acertos - erros : acertos,
+    porMateria,
   };
 }
