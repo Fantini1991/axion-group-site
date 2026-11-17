@@ -1,5 +1,5 @@
 import { DESVIOS } from "../corretorLocal";
-import { DISCURSIVAS, ITENS_PF, QUESTOES_RFB, type Trilha } from "./dados";
+import { DISCURSIVAS, ITENS_PF, QUESTOES_RFB_SIMULADO, type Trilha } from "./dados";
 import type { ProvaOficial } from "./provasOficiais";
 
 export interface ResultadoObjetivaConcurso {
@@ -62,14 +62,14 @@ export function corrigirObjetiva(
       else erros++;
     }
   } else {
-    for (const q of QUESTOES_RFB) {
+    for (const q of QUESTOES_RFB_SIMULADO) {
       const r = respostas[q.id];
       if (r === null || r === undefined) brancos++;
       else if (r === q.correta) acertos++;
       else erros++;
     }
   }
-  const total = trilha === "PF" ? ITENS_PF.length : QUESTOES_RFB.length;
+  const total = trilha === "PF" ? ITENS_PF.length : QUESTOES_RFB_SIMULADO.length;
   return {
     id: crypto.randomUUID(),
     tipo: "objetiva",

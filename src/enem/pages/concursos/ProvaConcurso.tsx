@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { salvarConcurso } from "../../api";
 import { useEnem } from "../../contexto";
-import { ITENS_PF, QUESTOES_RFB, TRILHAS, type Trilha } from "../../concursos/dados";
+import { ITENS_PF, QUESTOES_RFB_SIMULADO, TRILHAS, type Trilha } from "../../concursos/dados";
 import { corrigirObjetiva } from "../../concursos/logica";
 import { LETRAS } from "../../prova";
 
@@ -37,7 +37,7 @@ export default function ProvaConcurso() {
 
   if (!t) return <Navigate to="/enem/concursos" replace />;
   const info = TRILHAS[t];
-  const ids = t === "PF" ? ITENS_PF.map((i) => i.id) : QUESTOES_RFB.map((q) => q.id);
+  const ids = t === "PF" ? ITENS_PF.map((i) => i.id) : QUESTOES_RFB_SIMULADO.map((q) => q.id);
   const respondidas = ids.filter((id) => estado.respostas[id] !== undefined && estado.respostas[id] !== null).length;
 
   const marcar = (id: string, valor: string | number) =>
@@ -65,6 +65,10 @@ export default function ProvaConcurso() {
   }
 
   let materiaAnterior = "";
+  /** Divisões da prova real, mostradas antes da primeira matéria de cada parte. */
+  const PARTES: Record<string, string> = t === "PF"
+    ? { "Língua Portuguesa": "Bloco I — Conhecimentos básicos", "Informática": "Bloco II — Informática", "Contabilidade": "Bloco III — Conhecimentos específicos" }
+    : { "Língua Portuguesa": "Prova 1 — manhã (70 questões)", "Direito Constitucional": "Prova 2 — tarde (70 questões)" };
 
   return (
     <>
@@ -80,6 +84,7 @@ export default function ProvaConcurso() {
             const r = estado.respostas[item.id];
             return (
               <div key={item.id}>
+                {cab && PARTES[item.materia] && <div className="enem-tag" style={{ marginTop: 24, fontSize: 13 }}>{PARTES[item.materia]}</div>}
                 {cab && <h2>{item.materia}</h2>}
                 <div className="enem-card" style={{ marginBottom: 10 }}>
                   <p style={{ marginBottom: 10 }}><strong>{i + 1}.</strong> {item.afirmacao}</p>
@@ -99,12 +104,13 @@ export default function ProvaConcurso() {
               </div>
             );
           })
-        : QUESTOES_RFB.map((q, i) => {
+        : QUESTOES_RFB_SIMULADO.map((q, i) => {
             const cab = q.materia !== materiaAnterior;
             materiaAnterior = q.materia;
             const r = estado.respostas[q.id];
             return (
               <div key={q.id}>
+                {cab && PARTES[q.materia] && <div className="enem-tag" style={{ marginTop: 24, fontSize: 13 }}>{PARTES[q.materia]}</div>}
                 {cab && <h2>{q.materia}</h2>}
                 <div className="enem-card" style={{ marginBottom: 10 }}>
                   <p style={{ fontWeight: 600, marginBottom: 10 }}>{i + 1}. {q.enunciado}</p>

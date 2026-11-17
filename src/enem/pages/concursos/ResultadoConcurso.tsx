@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { historicoConcurso } from "../../api";
-import { ITENS_PF, QUESTOES_RFB, TRILHAS } from "../../concursos/dados";
+import { ITENS_PF, QUESTOES_RFB_SIMULADO, TRILHAS } from "../../concursos/dados";
 import type { ResultadoConcurso as Resultado, ResultadoDiscursiva, ResultadoObjetivaConcurso, ResultadoOficial } from "../../concursos/logica";
 import { buscarProvaOficial } from "../../concursos/provasOficiais";
 import { LETRAS } from "../../prova";
@@ -89,7 +89,7 @@ function Objetiva({ r }: { r: ResultadoObjetivaConcurso }) {
               </div>
             );
           })
-        : QUESTOES_RFB.map((q, i) => {
+        : QUESTOES_RFB_SIMULADO.map((q, i) => {
             const resp = (r.respostas[q.id] ?? null) as number | null;
             const acertou = resp === q.correta;
             if (soErros && acertou) return null;

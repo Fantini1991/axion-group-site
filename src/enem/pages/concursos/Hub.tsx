@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { historicoConcurso } from "../../api";
-import { DISCURSIVAS, ITENS_PF, QUESTOES_RFB, TRILHAS, type Trilha } from "../../concursos/dados";
+import { DISCURSIVAS, ITENS_PF, QUESTOES_RFB_SIMULADO, TRILHAS, type Trilha } from "../../concursos/dados";
 import type { ResultadoConcurso } from "../../concursos/logica";
 import { buscarProvaOficial } from "../../concursos/provasOficiais";
 
@@ -31,7 +31,7 @@ export default function HubConcursos() {
           const info = TRILHAS[t];
           const obj = melhor(t, "objetiva");
           const disc = melhor(t, "discursiva");
-          const total = t === "PF" ? ITENS_PF.length : QUESTOES_RFB.length;
+          const total = t === "PF" ? ITENS_PF.length : QUESTOES_RFB_SIMULADO.length;
           return (
             <div key={t} className="enem-card">
               <span className="enem-tag" style={{ background: `${info.cor}18`, color: info.cor }}>{info.cargo}</span>

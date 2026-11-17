@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { rankingConcurso } from "../../api";
 import { useEnem } from "../../contexto";
 import type { LinhaRankingConcurso } from "../../concursos/logica";
-import { ITENS_PF, QUESTOES_RFB } from "../../concursos/dados";
+import { ITENS_PF, QUESTOES_RFB_SIMULADO } from "../../concursos/dados";
 
 type Criterio = "pfObjetiva" | "pfDiscursiva" | "rfbObjetiva" | "rfbDiscursiva";
 
@@ -33,7 +33,7 @@ export default function RankingConcurso() {
     <>
       <h1>🏆 Ranking dos concursos</h1>
       <p className="sub" style={{ marginBottom: 16 }}>
-        Melhor resultado de cada pessoa nos simulados inéditos. PF objetiva: nota líquida (acertos − erros, de {ITENS_PF.length}). Receita objetiva: acertos (de {QUESTOES_RFB.length}).
+        Melhor resultado de cada pessoa nos simulados inéditos. PF objetiva: nota líquida (acertos − erros, de {ITENS_PF.length}). Receita objetiva: acertos (de {QUESTOES_RFB_SIMULADO.length}).
         Discursivas: nota de 0 a 10.
       </p>
       <div className="enem-abas">
