@@ -33,6 +33,14 @@ export default function CartaoResposta() {
   const opcoes = prova.formato === "CE" ? ["C", "E"] : ["A", "B", "C", "D", "E"];
   const marcadas = Object.values(respostas).filter(Boolean).length;
 
+  /** Abre o caderno numa janela posicionada na metade esquerda da tela (no computador), para ficar ao lado do cartão. */
+  const abrirAoLado = (url: string) => {
+    const w = Math.round(window.screen.availWidth / 2);
+    const h = window.screen.availHeight;
+    const janela = window.open(url, "caderno-prova", `left=0,top=0,width=${w},height=${h}`);
+    if (!janela) window.open(url, "_blank");
+  };
+
   const marcar = (n: number, v: string) => setRespostas((r) => ({ ...r, [n]: r[n] === v ? "" : v }));
 
   async function corrigir() {
@@ -61,14 +69,16 @@ export default function CartaoResposta() {
       <span className="enem-tag">{prova.banca} · {prova.ano}</span>
       <h1 style={{ marginTop: 8 }}>Cartão-resposta — {prova.cargo}</h1>
       <div className="enem-info">
-        Abra o caderno oficial (links abaixo), resolva e marque aqui. Clique de novo numa opção para deixar o item em branco.
+        <strong>Como fazer:</strong> clique em “Abrir ao lado” para abrir o caderno oficial numa janela à esquerda, resolva as
+        questões lendo o caderno e marque as respostas aqui. Ao terminar, clique em “Corrigir”: o sistema compara com o gabarito
+        oficial. No celular, o caderno abre em outra aba — é só alternar entre as abas. Clique de novo numa opção para deixar em branco.
         {prova.formato === "CE" && " No Cebraspe, cada erro anula um acerto: na dúvida, deixar em branco pode compensar."}
       </div>
       <div className="enem-linha" style={{ gap: 8, marginBottom: 16 }}>
         {prova.cadernos.map((c) => (
-          <a key={c.url} href={c.url} target="_blank" rel="noopener noreferrer" className="enem-btn sec" style={{ padding: "6px 12px", fontSize: 13 }}>
-            📄 {c.nome} ↗
-          </a>
+          <button key={c.url} onClick={() => abrirAoLado(c.url)} className="enem-btn" style={{ padding: "7px 12px", fontSize: 13 }}>
+            📄 Abrir ao lado: {c.nome}
+          </button>
         ))}
       </div>
       {erro && <div className="enem-erro">{erro}</div>}

@@ -27,6 +27,14 @@ export default function Painel() {
         <div className="enem-aviso">Modo local: seus resultados ficam salvos apenas neste navegador.</div>
       )}
 
+      <div className="enem-card" style={{ marginBottom: 16, borderColor: "#93c5fd" }}>
+        <h3>📖 Estudar antes da prova</h3>
+        <p className="sub" style={{ marginBottom: 12 }}>
+          Exercícios por matéria (ENEM, Polícia Federal e Receita Federal) com correção na hora e a explicação de como resolver cada um.
+        </p>
+        <Link to="/enem/estudar" className="enem-btn">Começar a estudar</Link>
+      </div>
+
       <div className="enem-grid">
         <div className="enem-card">
           <h3>📝 Provas 1, 2 e 3</h3>

@@ -12,6 +12,7 @@ import Redacao from "./pages/Redacao";
 import CorrecaoRedacao from "./pages/CorrecaoRedacao";
 import Ranking from "./pages/Ranking";
 import Anteriores from "./pages/Anteriores";
+import Estudar from "./pages/Estudar";
 import HubConcursos from "./pages/concursos/Hub";
 import ProvaConcurso from "./pages/concursos/ProvaConcurso";
 import DiscursivaConcurso from "./pages/concursos/DiscursivaConcurso";
@@ -32,6 +33,7 @@ function Topo() {
         {usuario && (
           <nav className="enem-nav">
             <NavLink to="/enem" end className={({ isActive }) => (isActive ? "ativo" : "")}>Início</NavLink>
+            <NavLink to="/enem/estudar" className={({ isActive }) => (isActive ? "ativo" : "")}>Estudar</NavLink>
             <NavLink to="/enem/prova" className={({ isActive }) => (isActive ? "ativo" : "")}>Provas</NavLink>
             <NavLink to="/enem/redacao" className={({ isActive }) => (isActive ? "ativo" : "")}>Treino de redação</NavLink>
             <NavLink to="/enem/anteriores" className={({ isActive }) => (isActive ? "ativo" : "")}>ENEM anteriores</NavLink>
@@ -91,6 +93,7 @@ export default function EnemApp() {
               <Route path="prova/resultado/:id" element={<Protegida><ResultadoProva /></Protegida>} />
               <Route path="redacao" element={<Protegida><Redacao /></Protegida>} />
               <Route path="redacao/resultado/:id" element={<Protegida><CorrecaoRedacao /></Protegida>} />
+              <Route path="estudar" element={<Protegida><Estudar /></Protegida>} />
               <Route path="anteriores" element={<Protegida><Anteriores /></Protegida>} />
               <Route path="concursos" element={<Protegida><HubConcursos /></Protegida>} />
               <Route path="concursos/prova/:trilha" element={<Protegida><ProvaConcurso /></Protegida>} />
